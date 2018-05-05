@@ -2,11 +2,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import org.apache.http.client.methods.HttpGet;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.auth.Authentication;
 import pl.michalwa.jfreesound.request.SimpleRequest;
 
 import static org.junit.Assert.*;

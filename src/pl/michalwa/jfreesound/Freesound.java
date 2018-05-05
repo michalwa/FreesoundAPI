@@ -19,7 +19,7 @@ import pl.michalwa.jfreesound.auth.Authentication;
 import pl.michalwa.jfreesound.auth.BasicAuthentication;
 import pl.michalwa.jfreesound.request.Request;
 
-/** The main API client class. Used to make requests and retriev
+/** The main API client class. Used to make requests and retrieve
  * data from the API. To use this class, firstly build an instance
  * with {@link Freesound.Builder Freesound.builder()}. */
 public class Freesound
@@ -66,7 +66,8 @@ public class Freesound
 	
 	/** Submits a request to the API and returns the result as JSON.
 	 * Unlike {@link Freesound#request(Request)} it catches the exception
-	 * and passes it to the given {@link Consumer}.
+	 * and passes it to the given {@link Consumer}. If the consumer is null,
+	 * the error is printed out to the standard error output stream.
 	 * @returns The response as JSON or <code>null</code> if the request fails. */
 	public JsonObject request(Request request, Consumer<IOException> onError)
 	{
@@ -74,7 +75,7 @@ public class Freesound
 		try {
 			result = request(request);
 		} catch(IOException e) {
-			Optional.ofNullable(onError).ifPresent(err -> err.accept(e));
+			Optional.ofNullable(onError).orElse(IOException::printStackTrace).accept(e);
 		}
 		return result;
 	}

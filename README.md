@@ -1,5 +1,13 @@
 **JFreesound** is a Freesound API client library for Java, written in Java.
 
+### Usage
+As a demonstration, try playing with this code:
+```java
+Freesound freesound = Freesound.builder().withToken("YOUR_API_TOKEN").build();
+JsonObject sound = freesound.request(new SimpleRequest("sounds", 1234), null);
+```
+In the future, more examples will be available in the GitHub repository wiki.
+
 ### Build
 In order to contribute to the project you'll need to clone
 it from the github repository and build it and test it manually.
