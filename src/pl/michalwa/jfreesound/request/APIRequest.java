@@ -3,15 +3,16 @@ package pl.michalwa.jfreesound.request;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.Freesound;
 
 /** The base interface of all requests that can
  * be made to the API. A request stores some data
  * and builds an HTTP request based on that data. */
-public abstract class Request
+public abstract class APIRequest
 {
 	/** Builds the HTTP request. */
-	public HttpGet httpRequest()
+	public HttpUriRequest httpRequest()
 	{
 		return new HttpGet(Freesound.API_BASE_URL + url());
 	}

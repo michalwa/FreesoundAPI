@@ -5,13 +5,13 @@ import java.io.Reader;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.request.SimpleRequest;
+import pl.michalwa.jfreesound.request.SimpleAPIRequest;
 
 import static org.junit.Assert.*;
 
 public class FreesoundTest
 {
-	String token;
+	String clientId, token;
 	Freesound freesound;
 	
 	@Before
@@ -20,6 +20,7 @@ public class FreesoundTest
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
 		JsonObject config = new JsonParser().parse(reader).getAsJsonObject();
+		clientId = config.get("id").getAsString();
 		token = config.get("token").getAsString();
 		
 		// Build the test object
@@ -29,7 +30,7 @@ public class FreesoundTest
 	@Test
 	public void simpleRequestTest()
 	{
-		JsonObject response = freesound.request(new SimpleRequest("sounds", 1234), null);
+		JsonObject response = freesound.request(new SimpleAPIRequest("sounds", 1234), null);
 		
 		assertNotNull(response);
 		assertEquals(1234,                   response.get("id").getAsInt());

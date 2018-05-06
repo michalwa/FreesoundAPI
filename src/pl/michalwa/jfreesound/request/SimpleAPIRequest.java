@@ -2,19 +2,19 @@ package pl.michalwa.jfreesound.request;
 
 /** A basic request implementation. Should only
  * be used for testing. */
-public class SimpleRequest extends Request
+public class SimpleAPIRequest extends APIRequest
 {
 	/** Parts of the request URL */
 	private Object[] parts;
 	
 	/** Constructs a simple request with the given sub-url */
-	public SimpleRequest(String url)
+	public SimpleAPIRequest(String url)
 	{
 		parts = new String[] { url };
 	}
 	
 	/** Constructs a simple request from the given sub-url parts */
-	public SimpleRequest(Object... url)
+	public SimpleAPIRequest(Object... url)
 	{
 		parts = url;
 	}
