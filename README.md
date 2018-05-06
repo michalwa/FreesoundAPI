@@ -41,11 +41,12 @@ following format:
     "token": "YOUR_API_TOKEN"
 }
 ```
-Also, for OAuth2 testing:
+Also, for OAuth2 testing *(which unfortunately has to be done mostly manually)*:
 ```json
 {
     "tempAuthCode": "TEMPORARY_AUTHORIZATION_CODE",
-    "tempRefreshToken": "TEMPORARY_REFRESH_TOKEN"
+    "tempRefreshToken": "TEMPORARY_REFRESH_TOKEN",
+    "tempAccessToken": "TEMPORARY_ACCESS_TOKEN"
 }
 ```
 This configuration file's purpose is just for testing and is not required

@@ -47,9 +47,18 @@ public class OAuth2 implements Authentication
 		return Optional.ofNullable(expiresIn).orElseThrow(() -> new IllegalStateException("Missing data - no request has been made."));
 	}
 	
+	/** Returns the refresh token provided by the
+	 * API when requesting the access token, if such request has
+	 * been made to construct this OAuth2 instance. */
 	public String refreshToken()
 	{
 		return Optional.ofNullable(refreshToken).orElseThrow(() -> new IllegalStateException("Missing data - no request has been made."));
+	}
+	
+	/** Returns the API access token */
+	public String accessToken()
+	{
+		return accessToken;
 	}
 	
 	/** Returns a new OAuth2 request object. Used
