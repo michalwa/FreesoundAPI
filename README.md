@@ -6,6 +6,9 @@ Until **JFreesound** is released, you will have to download the source code
 [below](#libraries).
 
 ### Usage
+Before implementing this library, it is recommended to review
+the original [API documentation](https://freesound.org/docs/api/).
+
 As a demonstration, try playing with this code:
 ```java
 import com.google.gson.JsonObject;
@@ -29,13 +32,20 @@ In order to contribute to the project you'll need to clone
 it from the github repository and build it and test it manually.
 For testing you'll need to include a resource directory in
 your builds with a `config.json` file within it. The config file
-contains the API token (aka *client secret*) used to access the Freesound
-API for testing, that you'll need to acquire for yourself. The file
-must follow the following format:
+contains API credentials used to access the Freesound API for testing,
+that you'll need to acquire for yourself. The file must follow the
+following format:
 ```json
 {
     "id": "YOUR_CLIENT_ID",
     "token": "YOUR_API_TOKEN"
+}
+```
+Also, for OAuth2 testing:
+```json
+{
+    "tempAuthCode": "TEMPORARY_AUTHORIZATION_CODE",
+    "tempRefreshToken": "TEMPORARY_REFRESH_TOKEN"
 }
 ```
 This configuration file's purpose is just for testing and is not required
