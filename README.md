@@ -55,5 +55,5 @@ the token and other data can be provided to the library directly *(see [usage](#
 
 ### Libraries
 **JFreesound** uses the following open-source libraries:
-  + [Apache HttpClient v4.5.5](https://hc.apache.org/httpcomponents-client-4.5.x/) licensed under [Apache License 2.0](http://www.apache.org/licenses/)
-  + [Gson v2.8.4](https://github.com/google/gson) licensed under [Apache License 2.0](https://github.com/google/gson/blob/master/LICENSE)
+  + [Apache HttpClient v4.5.5](https://hc.apache.org/httpcomponents-client-4.5.x/) licensed under [Apache License 2.0](http://www.apache.org/licenses/) - [*(download)*](https://hc.apache.org/downloads.cgi)
+  + [Gson v2.8.4](https://github.com/google/gson) licensed under [Apache License 2.0](https://github.com/google/gson/blob/master/LICENSE) - [*(download)*](http://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.4/)
