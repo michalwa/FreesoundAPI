@@ -16,7 +16,7 @@ import pl.michalwa.jfreesound.request.APIRequest;
  * with {@link Freesound.Builder Freesound.builder()}. */
 public class Freesound
 {
-	/** The base url that all API request URLs begin with.
+	/** The base uri that all API request URLs begin with.
 	 * Used by the {@link APIRequest} class to construct request URLs. */
 	public static final String API_BASE_URL = "https://freesound.org/apiv2/";
 	
@@ -67,7 +67,7 @@ public class Freesound
 	}
 	
 	/** Freesound instance builder */
-	public static class Builder
+	public static final class Builder
 	{
 		/* Parameters */
 		private Authentication auth = null;
@@ -75,21 +75,21 @@ public class Freesound
 		
 		private Builder() {}
 		
-		/** Uses the {@link TokenAuthentication} with the given token. */
+		/** Uses {@link TokenAuthentication} with the given token. */
 		public Builder withToken(String token)
 		{
 			this.auth = new TokenAuthentication(token);
 			return this;
 		}
 		
-		/** Uses a custom authentication mechanism */
+		/** Uses the specified authentication method */
 		public Builder withAuthentication(Authentication auth)
 		{
 			this.auth = auth;
 			return this;
 		}
 		
-		/** Uses the given HttpClient to make http requests
+		/** Uses the given HTTP client to make http requests
 		 * to the API instead of the default one. */
 		public Builder withHttpClient(Http http)
 		{

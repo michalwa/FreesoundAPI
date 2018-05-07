@@ -20,7 +20,7 @@ public abstract class Http
 	/** Executes the given request and returns the body
 	 * of the response.
 	 * @throws UnauthorizedException if the request results in a 401 status response
-	 */
+	 * @throws HttpResponseException if the request results in a non 2xx status response */
 	public String executeAndRead(HttpUriRequest request) throws IOException
 	{
 		HttpResponse response = execute(request);

@@ -13,14 +13,14 @@ As a demonstration, try playing with this code:
 ```java
 import com.google.gson.JsonObject;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.request.SimpleAPIRequest;
+import pl.michalwa.jfreesound.request.SimpleRequest;
 
 public class JFreesoundDemo
 {
     public static void main(String[] args)
     {
         Freesound freesound = Freesound.builder().withToken("YOUR_API_TOKEN").build();
-        JsonObject sound = freesound.request(new SimpleAPIRequest("sounds", 1234), null);
+        JsonObject sound = freesound.request(new SimpleRequest("sounds", 1234), null);
     }
 }
 ```

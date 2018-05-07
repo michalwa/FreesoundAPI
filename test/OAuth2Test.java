@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
 import pl.michalwa.jfreesound.auth.OAuth2;
-import pl.michalwa.jfreesound.request.SimpleAPIRequest;
+import pl.michalwa.jfreesound.request.SimpleRequest;
 
 public class OAuth2Test
 {
@@ -47,6 +47,6 @@ public class OAuth2Test
 				.withAuthentication(auth)
 				.build();
 		
-		System.out.println(freesound.request(new SimpleAPIRequest("me"), null).toString());
+		System.out.println(freesound.request(new SimpleRequest("me"), null).toString());
 	}
 }

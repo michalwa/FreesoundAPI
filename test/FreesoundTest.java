@@ -5,7 +5,7 @@ import java.io.Reader;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.request.SimpleAPIRequest;
+import pl.michalwa.jfreesound.request.SimpleRequest;
 
 import static org.junit.Assert.*;
 
@@ -30,7 +30,7 @@ public class FreesoundTest
 	@Test
 	public void simpleRequestTest()
 	{
-		JsonObject response = freesound.request(new SimpleAPIRequest("sounds", 1234), null);
+		JsonObject response = freesound.request(new SimpleRequest("sounds", 1234), null);
 		
 		assertNotNull(response);
 		assertEquals(1234,                   response.get("id").getAsInt());
