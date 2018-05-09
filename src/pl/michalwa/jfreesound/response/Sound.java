@@ -4,6 +4,10 @@ import java.util.Map;
 
 public class Sound
 {
+	/* The names of these fields correspond to
+	 * the JSON properties of the API response.
+	 * They must not be changed for Gson uses
+	 * those names to deserialize JSON objects */
 	public int id;
 	public String url;
 	public String name;
@@ -36,4 +40,6 @@ public class Sound
 	public Object analysis;
 	public String analysis_stats;
 	public String analysis_frames;
+	
+	// TODO: Private fields & Getters
 }
