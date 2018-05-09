@@ -5,15 +5,15 @@ import java.io.Reader;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.request.SimpleRequest;
+import pl.michalwa.jfreesound.response.Sound;
+import pl.michalwa.jfreesound.request.SoundRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class FreesoundTest
+public class SoundRequestTest
 {
 	String clientId, token;
 	Freesound freesound;
-	volatile boolean recievedAsync = false;
 	
 	@Before
 	public void setup()
@@ -29,13 +29,9 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void simpleRequestTest()
+	public void soundRequestTest()
 	{
-		JsonObject response = freesound.request(new SimpleRequest("sounds", 1234)).awaitAndCatch();
-		
-		assertNotNull(response);
-		assertEquals(1234,                   response.get("id").getAsInt());
-		assertEquals("180404D.mp3",          response.get("name").getAsString());
-		assertEquals("Traveling drum sound", response.get("description").getAsString());
+		Sound sound = freesound.request(new SoundRequest(1234)).awaitAndCatch();
+		assertEquals(1234, sound.id);
 	}
 }

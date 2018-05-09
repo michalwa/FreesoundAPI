@@ -47,6 +47,6 @@ public class OAuth2Test
 				.withAuthentication(auth)
 				.build();
 		
-		System.out.println(freesound.request(new SimpleRequest("me"), null).toString());
+		System.out.println(freesound.request(new SimpleRequest("me")).awaitAndCatch().toString());
 	}
 }

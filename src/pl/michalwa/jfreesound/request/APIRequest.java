@@ -1,6 +1,8 @@
 package pl.michalwa.jfreesound.request;
 
+import com.google.gson.JsonObject;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -14,7 +16,7 @@ import pl.michalwa.jfreesound.Freesound;
 /** The base interface of all requests that can
  * be made to the API. A request stores some data
  * and builds an HTTP request based on that data. */
-public abstract class APIRequest
+public abstract class APIRequest<TResponse>
 {
 	/** Builds the HTTP request. */
 	public HttpUriRequest httpRequest()
@@ -42,8 +44,15 @@ public abstract class APIRequest
 	 * then this method must return <code>foo/bar/</code>. */
 	protected abstract String uri();
 	
+	/** Returns the processed response of the
+	 * type specified by the return type of this request.*/
+	public abstract TResponse processResponse(JsonObject response);
+	
 	/** Returns the URL (GET) parameters for this request */
-	protected abstract Map<String, String> urlParams();
+	protected Map<String, String> urlParams()
+	{
+		return Collections.emptyMap();
+	}
 	
 	/** Joins the given uri parts into a request sub-uri
 	 * using the '/' (slash) separator. */

@@ -1,11 +1,10 @@
 package pl.michalwa.jfreesound.request;
 
-import java.util.Collections;
-import java.util.Map;
+import com.google.gson.JsonObject;
 
 /** A basic request implementation. Should only
  * be used for testing. */
-public class SimpleRequest extends APIRequest
+public class SimpleRequest extends APIRequest<JsonObject>
 {
 	/** Parts of the request URL */
 	private Object[] parts;
@@ -29,8 +28,8 @@ public class SimpleRequest extends APIRequest
 	}
 	
 	@Override
-	protected Map<String, String> urlParams()
+	public JsonObject processResponse(JsonObject response)
 	{
-		return Collections.emptyMap();
+		return response;
 	}
 }
