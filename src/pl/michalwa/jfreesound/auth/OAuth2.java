@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.Freesound;
 import pl.michalwa.jfreesound.http.Http;
 import pl.michalwa.jfreesound.http.HttpPostBuilder;
+import pl.michalwa.jfreesound.utils.Promise;
 
 /** The OAuth2 authentication method
  * @see <a href="https://freesound.org/docs/api/authentication.html#oauth2-authentication">OAuth2 Authentication</a> */
@@ -124,51 +125,41 @@ public class OAuth2 implements Authentication
 			return this;
 		}
 		
-		/** Submits the request and returns the resulting
-		 * authentication object. */
-		public OAuth2 submit() throws IOException
+		/** Submits the request and returns a promise of a new OAuth2 instance */
+		public Promise<OAuth2> submit()
 		{
-			if(clientId == null || clientSecret == null) throw new IllegalStateException("Credentials must be set before the request is submitted.");
-			http = Optional.ofNullable(http).orElse(Http.defaultClient());
-			
-			// Build the request
-			HttpPostBuilder post = new HttpPostBuilder(Freesound.API_BASE_URL + "oauth2/access_token/")
-					.param("client_id", clientId)
-					.param("client_secret", clientSecret);
-			if(refreshToken != null) {
-				post.param("grant_type", "refresh_token")
-						.param("refresh_token", refreshToken);
-			} else if(authorizationCode != null) {
-				post.param("grant_type", "authorization_code")
-						.param("code", authorizationCode);
-			} else {
-				throw new IllegalStateException("A request type must be set before the request is submitted.");
-			}
-			
-			// Execute the request & parse the response
-			JsonObject response = json.parse(http.executeAndRead(post.build())).getAsJsonObject();
-			if(response.has("access_token")) {
-				OAuth2 auth = new OAuth2(response.get("access_token").getAsString());
-				auth.expiresIn         = response.get("expires_in").getAsInt();
-				auth.refreshToken      = response.get("refresh_token").getAsString();
-				return auth;
-			}
-			
-			throw new OAuth2Exception("Authentication failed.");
-		}
-		
-		/** Same as {@link Request#submit()}, but catches the
-		 * {@link IOException} and passes it to the consumer.
-		 * If the consumer is null, the exception is printed out
-		 * to the standard error output stream. */
-		public OAuth2 submit(Consumer<IOException> onError)
-		{
-			try {
-				return submit();
-			} catch(IOException e) {
-				Optional.ofNullable(onError).orElse(IOException::printStackTrace).accept(e);
-				return null;
-			}
+			return new Promise<>(() -> {
+				if(clientId == null || clientSecret == null)
+					throw new IllegalStateException("Credentials must be set before the request is submitted.");
+				
+				http = Optional.ofNullable(http).orElse(Http.defaultClient());
+				
+				// Build the request
+				HttpPostBuilder post = new HttpPostBuilder(Freesound.API_BASE_URL + "oauth2/access_token/")
+						.param("client_id", clientId)
+						.param("client_secret", clientSecret);
+				
+				if(refreshToken != null) {
+					post.param("grant_type", "refresh_token")
+							.param("refresh_token", refreshToken);
+				} else if(authorizationCode != null) {
+					post.param("grant_type", "authorization_code")
+							.param("code", authorizationCode);
+				} else {
+					throw new IllegalStateException("A request type must be set before the request is submitted.");
+				}
+				
+				// Execute the request & parse the response
+				JsonObject response = json.parse(http.executeAndRead(post.build())).getAsJsonObject();
+				if(response.has("access_token")) {
+					OAuth2 auth = new OAuth2(response.get("access_token").getAsString());
+					auth.expiresIn = response.get("expires_in").getAsInt();
+					auth.refreshToken = response.get("refresh_token").getAsString();
+					return auth;
+				}
+				
+				throw new OAuth2Exception("Authentication failed.");
+			});
 		}
 	}
 }
