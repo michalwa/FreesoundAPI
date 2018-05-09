@@ -38,8 +38,8 @@ public class OAuth2Test
 		OAuth2 auth = new OAuth2(accessToken);
 		
 		System.out.println("Access token: " + auth.accessToken());
-		// System.out.println("Refresh token: " + auth.refreshToken());
-		// System.out.println("Expires in: " + auth.expiresIn());
+		System.out.println("Refresh token: " + auth.refreshToken());
+		System.out.println("Expires in: " + auth.expiresIn());
 		
 		freesound = Freesound.builder()
 				.withAuthentication(auth)

@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import javax.swing.text.html.Option;
 import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.Freesound;
 import pl.michalwa.jfreesound.http.Http;
@@ -20,7 +21,7 @@ public class OAuth2 implements Authentication
 	private String accessToken;
 	/** The 'expires_in' value provided by the
 	 * API when requesting the access token. */
-	private Integer expiresIn = null;
+	private int expiresIn = -1;
 	/** The refresh token provided by the API
 	 * when requesting the access token. */
 	private String refreshToken = null;
@@ -42,18 +43,20 @@ public class OAuth2 implements Authentication
 	
 	/** Returns the 'expires_in' value provided by the
 	 * API when requesting the access token, if such request has
-	 * been made to construct this OAuth2 instance. */
+	 * been made to construct this OAuth2 instance.
+	 * @returns the 'expires_in' value or <code>-1</code> if no request has been made */
 	public int expiresIn()
 	{
-		return Optional.ofNullable(expiresIn).orElseThrow(() -> new IllegalStateException("Missing data - no request has been made."));
+		return expiresIn;
 	}
 	
 	/** Returns the refresh token provided by the
 	 * API when requesting the access token, if such request has
-	 * been made to construct this OAuth2 instance. */
+	 * been made to construct this OAuth2 instance.
+	 * @returns the refresh token or null if no request has been made */
 	public String refreshToken()
 	{
-		return Optional.ofNullable(refreshToken).orElseThrow(() -> new IllegalStateException("Missing data - no request has been made."));
+		return refreshToken;
 	}
 	
 	/** Returns the API access token */
