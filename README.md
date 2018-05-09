@@ -44,7 +44,8 @@ following format:
     "token": "YOUR_API_TOKEN"
 }
 ```
-Also, for OAuth2 testing *(which unfortunately has to be done mostly manually)*:
+Unfortunately, testing OAuth2 authentication requires acquiring the authorization code
+manually and then storing these properties in the config file:
 ```json
 {
     "tempAuthCode": "TEMPORARY_AUTHORIZATION_CODE",
