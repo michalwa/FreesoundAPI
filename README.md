@@ -1,5 +1,8 @@
 **JFreesound** is a Freesound API client library for Java, written in Java.
 
+The library ought to be released when the [Basic Functionality](https://github.com/michalwa/JFreesound/milestone/1)
+milestone is complete.
+
 ### Download
 Until **JFreesound** is released, you will have to download the source code
 (or clone the GitHub repository) and build it yourself with the libraries listed
