@@ -250,7 +250,13 @@ public class Sound
 	{
 		return analysis_frames;
 	}
-
+	
+	@Override
+	public String toString()
+	{
+		return "Sound[" + id() + "](" + name() + ")";
+	}
+	
 	/** Enum containing all known sound types */
 	public enum Type
 	{

@@ -2,10 +2,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
+import pl.michalwa.jfreesound.data.Sound;
 import pl.michalwa.jfreesound.request.SimpleRequest;
+import pl.michalwa.jfreesound.request.SoundListRequest;
 
 import static org.junit.Assert.*;
 
@@ -37,5 +40,21 @@ public class FreesoundTest
 		assertEquals(1234,                   response.get("id").getAsInt());
 		assertEquals("180404D.mp3",          response.get("name").getAsString());
 		assertEquals("Traveling drum sound", response.get("description").getAsString());
+	}
+	
+	@Test
+	public void soundListRequestTest()
+	{
+		SoundListRequest request = new SoundListRequest()
+		{
+			@Override
+			protected String uri()
+			{
+				return joinURL("sounds", 1234, "similar");
+			}
+		};
+		
+		Sound[] response = freesound.request(request).awaitAndCatch();
+		System.out.println(Arrays.toString(response));
 	}
 }

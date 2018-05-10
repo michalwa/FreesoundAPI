@@ -37,7 +37,7 @@ public class SoundRequestTest
 		
 		// Logging some stuff
 		System.out.println(sound.geotag());
-		System.out.println(sound.previewUrl(Sound.Preview.HQ_MP3));
-		System.out.println(sound.imageUrl(Sound.Image.WAVEFORM_L));
+		System.out.println(sound.previewUrl(Sound.Preview.HIGH_QUALITY_MP3));
+		System.out.println(sound.imageUrl(Sound.Image.WAVEFORM_LARGE));
 	}
 }
