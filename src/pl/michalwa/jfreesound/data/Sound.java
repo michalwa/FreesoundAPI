@@ -103,7 +103,7 @@ public class Sound
 		return Stream.of(Type.values())
 				.filter(t -> t.type.equals(type))
 				.findFirst()
-				.orElse(Type.UNKNOWN);
+				.orElse(null);
 	}
 
 	/** The number of channels that the sound has */
@@ -259,8 +259,7 @@ public class Sound
 		AIFF("aiff"),
 		MP3("mp3"),
 		M4A("m4a"),
-		FLAC("flac"),
-		UNKNOWN("");
+		FLAC("flac");
 
 		private String type;
 
@@ -274,13 +273,13 @@ public class Sound
 	public enum Preview
 	{
 		/** ~128kbps quality mp3 preview */
-		HQ_MP3("preview-hq-mp3"),
+		HIGH_QUALITY_MP3("preview-hq-mp3"),
 		/** ~64kbps quality mp3 preview */
-		LQ_MP3("preview-lq-mp3"),
+		LOW_QUALITY_MP3("preview-lq-mp3"),
 		/** ~128kbps quality ogg preview */
-		HQ_OGG("preview-hq-ogg"),
+		HIGH_QUALITY_OGG("preview-hq-ogg"),
 		/** ~64kbps quality ogg preview */
-		LQ_OGG("preview-lq-ogg");
+		LOW_QUALITY_OGG("preview-lq-ogg");
 
 		private String key;
 
@@ -294,13 +293,13 @@ public class Sound
 	public enum Image
 	{
 		/** Large waveform image */
-		WAVEFORM_L("waveform_l"),
+		WAVEFORM_LARGE("waveform_l"),
 		/** Medium waveform image */
-		WAVEFORM_M("waveform_m"),
+		WAVEFORM_MEDIUM("waveform_m"),
 		/** Large spectrogram image */
-		SPECTRAL_L("spectral_l"),
+		SPECTROGRAM_LARGE("spectral_l"),
 		/** Medium spectrogram image */
-		SPECTRAL_M("spectral_m");
+		SPECTROGRAM_MEDIUM("spectral_m");
 
 		private String key;
 
