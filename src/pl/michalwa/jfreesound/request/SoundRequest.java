@@ -2,7 +2,7 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import pl.michalwa.jfreesound.response.Sound;
+import pl.michalwa.jfreesound.data.Sound;
 
 /** A simple sound-by-id request */
 public class SoundRequest extends APIRequest<Sound>

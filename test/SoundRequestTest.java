@@ -5,7 +5,7 @@ import java.io.Reader;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.response.Sound;
+import pl.michalwa.jfreesound.data.Sound;
 import pl.michalwa.jfreesound.request.SoundRequest;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +32,12 @@ public class SoundRequestTest
 	public void soundRequestTest()
 	{
 		Sound sound = freesound.request(new SoundRequest(1234)).awaitAndCatch();
-		assertEquals(1234, sound.id);
+		assertEquals(1234, sound.id());
+		assertEquals("180404D.mp3", sound.name());
+		
+		// Logging some stuff
+		System.out.println(sound.geotag());
+		System.out.println(sound.previewUrl(Sound.Preview.HQ_MP3));
+		System.out.println(sound.imageUrl(Sound.Image.WAVEFORM_L));
 	}
 }
