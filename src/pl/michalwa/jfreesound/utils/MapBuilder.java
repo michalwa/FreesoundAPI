@@ -8,6 +8,7 @@ import java.util.Map;
 public class MapBuilder<K, V>
 {
 	private Map<K, V> map;
+	private boolean unmodifiable;
 
 	/** Initializes an empty map builder */
 	public MapBuilder()
@@ -22,15 +23,18 @@ public class MapBuilder<K, V>
 		return this;
 	}
 	
+	/** Sets the map to be built as unmodifable, if the parameter
+	 * <code>unmodifiable</code> is <code>true</code>. If <code>false</code>
+	 * is given, the built map will be modifiable. */
+	public MapBuilder<K, V> unmodifiable(boolean unmodifiable)
+	{
+		this.unmodifiable = unmodifiable;
+		return this;
+	}
+	
 	/** Builds and returns the map */
 	public Map<K, V> build()
 	{
-		return map;
-	}
-	
-	/** Builds and returns the map as an unmodifiable map */
-	public Map<K, V> buildUnmodifiable()
-	{
-		return Collections.unmodifiableMap(map);
+		return unmodifiable ? Collections.unmodifiableMap(map) : map;
 	}
 }

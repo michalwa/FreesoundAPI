@@ -10,8 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import pl.michalwa.jfreesound.auth.UnauthorizedException;
 
-/** A facade interface for the HTTP client,
- * used to make HTTP requests */
+/** A wrapper for the HTTP client, used to make HTTP requests */
 public abstract class Http
 {
 	/** Executes the given request and returns the response. */
@@ -19,8 +18,8 @@ public abstract class Http
 	
 	/** Executes the given request and returns the body
 	 * of the response.
-	 * @throws UnauthorizedException if the request results in a 401 status response
-	 * @throws HttpResponseException if the request results in a non 2xx status response */
+	 * @throws pl.michalwa.jfreesound.auth.UnauthorizedException if the request results in a 401 status response
+	 * @throws org.apache.http.client.HttpResponseException if the request results in a non 2xx status response */
 	public String executeAndRead(HttpUriRequest request) throws IOException
 	{
 		HttpResponse response = execute(request);
@@ -38,7 +37,7 @@ public abstract class Http
 	}
 	
 	/** Returns the default HTTP client implementation
-	 * using {@link HttpClient org.apache.http.client.HttpClient}. */
+	 * using {@link org.apache.http.client.HttpClient}. */
 	public static Http defaultClient()
 	{
 		return new Http()

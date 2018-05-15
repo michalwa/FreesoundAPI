@@ -8,6 +8,7 @@ import java.util.concurrent.*;
 import java.util.function.Consumer;
 import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.auth.Authentication;
+import pl.michalwa.jfreesound.auth.OAuth2;
 import pl.michalwa.jfreesound.auth.TokenAuthentication;
 import pl.michalwa.jfreesound.http.Http;
 import pl.michalwa.jfreesound.request.APIRequest;
@@ -19,7 +20,7 @@ import pl.michalwa.jfreesound.utils.Promise;
 public class Freesound
 {
 	/** The base uri that all API request URLs begin with.
-	 * Used by the {@link APIRequest} class to construct request URLs. */
+	 * Used by the {@link pl.michalwa.jfreesound.request.APIRequest} class to construct request URLs. */
 	public static final String API_BASE_URL = "https://freesound.org/apiv2/";
 	
 	/** The authentication method used in API requests */
@@ -50,10 +51,18 @@ public class Freesound
 	
 	/** Submits a request to the API and returns the result
 	 * as an instance of the <code>TRequest</code> generic type
-	 * of the given request */
-	public <TResponse> Promise<TResponse> request(APIRequest<TResponse> request)
+	 * of the given request
+	 * @param <R> type of the response returned by the given request */
+	public <R> Promise<R> request(APIRequest<R> request)
 	{
-		return new Promise<>(() -> request.processResponse(rawRequest(request).await()));
+		return new Promise<>(rawRequest(request), request::processResponse);
+	}
+	
+	/** Returns true, if this API client has
+	 * been successfully authenticated with OAuth2. */
+	public boolean isOAuth2Authenticated()
+	{
+		return (auth instanceof OAuth2);
 	}
 	
 	/** Returns the default Freesound instance builder */

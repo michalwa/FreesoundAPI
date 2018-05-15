@@ -2,31 +2,27 @@ package pl.michalwa.jfreesound.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /** A promise of an asyncronous task that it will
  * return a value of the generic type <code>T</code>.
  * @param <T> the type of the returned value */
 public class Promise<T>
 {
-	private Thread thread;
-	private Callable<T> callable;
+	private Future<?> task;
 	private List<Consumer<T>> onDone = new ArrayList<>();
 	private List<Consumer<Exception>> onFail = new ArrayList<>();
 	private volatile T value = null;
 	private volatile Exception exception = null;
 	
-	/** Performs a call to the given callable on
-	 * a separate thread and depending on the
-	 * result of that call either calls the <code>onDone</code>
-	 * listeners or <code>onFail</code> listeners, when the
-	 * call results in an exception. */
+	/** Performs a call to the given callable on a separate thread and depending on the
+	 * result of that call either calls the <code>onDone</code>  listeners or
+	 * <code>onFail</code> listeners, when the call results in an exception. */
 	public Promise(Callable<T> callable)
 	{
-		this.callable = callable;
-		thread = new Thread(() -> {
+		task = Executors.newSingleThreadExecutor().submit(() -> {
 			try {
 				value = callable.call();
 				onDone.forEach(c -> c.accept(value));
@@ -35,11 +31,20 @@ public class Promise<T>
 				onFail.forEach(c -> c.accept(exception));
 			}
 		});
-		thread.start();
 	}
 	
-	/** Adds a listener to the promise that will get executed
-	 * when the promise is satisfied.
+	/** Constructs a promise that runs the sub-promise of another type
+	 * and converts the resulting value with the given <code>converter</code>
+	 * @param subPromise the promise to execute in this promise
+	 * @param converter the function used to convert the result of the subPromise to the type of this {@link Promise}
+	 * @param <S> the returned type of the sub-promise
+	 */
+	public <S> Promise(Promise<S> subPromise, Function<S, T> converter)
+	{
+		this(() -> converter.apply(subPromise.await()));
+	}
+	
+	/** Adds a listener to the promise that will get executed when the promise is satisfied.
 	 * @return this */
 	public Promise<T> onDone(Consumer<T> action)
 	{
@@ -61,14 +66,18 @@ public class Promise<T>
 	 * exception, if the call also resulted in an exception. */
 	public T await() throws Exception
 	{
-		while(true) {
+		while(!task.isDone()) {
 			if(exception != null) throw exception;
 			else if(value != null) return value;
+			
+			if(task.isCancelled())
+				throw new PromiseAwaitException("Awaited promise has been cancelled.");
 		}
+		return null;
 	}
 	
-	/** Calls {@link Promise#await()} and catches any exception */
-	public T awaitAndCatch()
+	/** Calls {@link Promise#await()}, but catches and prints any exceptions */
+	public T safeAwait()
 	{
 		try {
 			return await();
@@ -78,19 +87,50 @@ public class Promise<T>
 		return null;
 	}
 	
-	/** Same as {@link Promise#await()}, but with a timeout.
-	 * If the timeout runs out and the promise hasn't been fulfilled,
-	 * this method will throw a {@link TimeoutException}.
+	/** Same as {@link Promise#await()}, but with a timeout. If the timeout runs
+	 * out and the promise hasn't been fulfilled,  this method will throw a {@link TimeoutException}.
 	 * @param timeout the timeout in milliseconds */
 	public T await(long timeout) throws Exception
 	{
 		long beginTime = System.currentTimeMillis();
-		while(true) {
+		while(!task.isDone()) {
 			if(exception != null) throw exception;
 			else if(value != null) return value;
 			
 			if(System.currentTimeMillis() - beginTime > timeout)
 				throw new TimeoutException("Awaited promise has not been fulfilled.");
+			
+			if(task.isCancelled())
+				throw new PromiseAwaitException("Awaited promise has been cancelled.");
+		}
+		return null;
+	}
+	
+	/** Calls {@link Promise#await(long)}, but catches and prints any exceptions */
+	public T safeAwait(long timeout)
+	{
+		try {
+			return await(timeout);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/** Cancels this promise. If the promise task is running, it will be interrupted.
+	 * This method has no effect, if the promise has already been canceled. */
+	public void cancel()
+	{
+		task.cancel(true);
+	}
+	
+	/** Thrown when an awaited promise is cancelled */
+	public static class PromiseAwaitException extends RuntimeException
+	{
+		/** Initializes the exception with the given detailed message */
+		private PromiseAwaitException(String s)
+		{
+			super(s);
 		}
 	}
 }

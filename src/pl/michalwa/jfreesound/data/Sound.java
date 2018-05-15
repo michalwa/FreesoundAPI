@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import pl.michalwa.jfreesound.request.SimilarSoundsRequest;
 
 /** The response data structure of the
  * {@link pl.michalwa.jfreesound.request.SoundRequest SoundRequest} */
@@ -223,12 +224,12 @@ public class Sound
 	{
 		return comment;
 	}
-
-	/** URL pointing to the similarity resource
-	 * (to get a list of similar sounds) */
-	public String similarSoundsUrl()
+	
+	/** Returns a request that can be used to
+	 * retrieve similar sounds based on this sound */
+	public SimilarSoundsRequest similarSounds()
 	{
-		return similar_sounds;
+		return new SimilarSoundsRequest(id);
 	}
 
 	/** Requested descriptors information or `null`

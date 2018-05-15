@@ -33,7 +33,7 @@ public class OAuth2Test
 				.withCredentials(clientId, token)
 				.withAuthCode(authCode)
 				.submit()
-				.awaitAndCatch();*/
+				.safeAwait();*/
 		
 		OAuth2 auth = new OAuth2(accessToken);
 		
@@ -45,6 +45,6 @@ public class OAuth2Test
 				.withAuthentication(auth)
 				.build();
 		
-		System.out.println(freesound.request(new SimpleRequest("me")).awaitAndCatch().toString());
+		System.out.println(freesound.request(new SimpleRequest("me")).safeAwait().toString());
 	}
 }

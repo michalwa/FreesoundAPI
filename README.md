@@ -23,7 +23,7 @@ public class JFreesoundDemo
     public static void main(String[] args)
     {
         Freesound freesound = Freesound.builder().withToken("YOUR_API_TOKEN").build();
-        JsonObject sound = freesound.request(new SimpleRequest("sounds", 1234)).awaitAndCatch();
+        JsonObject sound = freesound.request(new SimpleRequest("sounds", 1234)).safeAwait();
     }
 }
 ```

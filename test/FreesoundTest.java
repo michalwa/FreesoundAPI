@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
 import pl.michalwa.jfreesound.data.Sound;
+import pl.michalwa.jfreesound.request.SimilarSoundsRequest;
 import pl.michalwa.jfreesound.request.SimpleRequest;
 import pl.michalwa.jfreesound.request.SoundListRequest;
 
@@ -34,27 +35,11 @@ public class FreesoundTest
 	@Test
 	public void simpleRequestTest()
 	{
-		JsonObject response = freesound.request(new SimpleRequest("sounds", 1234)).awaitAndCatch();
+		JsonObject response = freesound.request(new SimpleRequest("sounds", 1234)).safeAwait();
 		
 		assertNotNull(response);
 		assertEquals(1234,                   response.get("id").getAsInt());
 		assertEquals("180404D.mp3",          response.get("name").getAsString());
 		assertEquals("Traveling drum sound", response.get("description").getAsString());
-	}
-	
-	@Test
-	public void soundListRequestTest()
-	{
-		SoundListRequest request = new SoundListRequest()
-		{
-			@Override
-			protected String uri()
-			{
-				return joinURL("sounds", 1234, "similar");
-			}
-		};
-		
-		Sound[] response = freesound.request(request).awaitAndCatch();
-		System.out.println(Arrays.toString(response));
 	}
 }
