@@ -2,13 +2,10 @@ package pl.michalwa.jfreesound.auth;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Consumer;
-import javax.swing.text.html.Option;
 import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.http.Http;
+import pl.michalwa.jfreesound.http.HttpClient;
 import pl.michalwa.jfreesound.http.HttpPostBuilder;
 import pl.michalwa.jfreesound.utils.Promise;
 
@@ -86,7 +83,7 @@ public class OAuth2 implements Authentication
 		
 		/** An HTTP client instance used to make requests for
 		 * the access token to the API. */
-		private Http http = null;
+		private HttpClient http = null;
 		private JsonParser json = new JsonParser();
 		
 		private Request() {}
@@ -121,8 +118,8 @@ public class OAuth2 implements Authentication
 		}
 		
 		/** Sets this request to use a custom HTTP client
-		 * instance instead of {@link Http#defaultClient()}. */
-		public Request withHttpClient(Http http)
+		 * instance instead of {@link HttpClient#defaultInstance()}. */
+		public Request withHttpClient(HttpClient http)
 		{
 			this.http = http;
 			return this;
@@ -135,7 +132,7 @@ public class OAuth2 implements Authentication
 				if(clientId == null || clientSecret == null)
 					throw new IllegalStateException("Credentials must be set before the request is submitted.");
 				
-				http = Optional.ofNullable(http).orElse(Http.defaultClient());
+				http = Optional.ofNullable(http).orElse(HttpClient.defaultInstance());
 				
 				// Build the request
 				HttpPostBuilder post = new HttpPostBuilder(Freesound.API_BASE_URL + "oauth2/access_token/")

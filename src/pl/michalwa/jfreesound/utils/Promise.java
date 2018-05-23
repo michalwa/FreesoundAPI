@@ -18,7 +18,7 @@ public class Promise<T>
 	private volatile Exception exception = null;
 	
 	/** Performs a call to the given callable on a separate thread and depending on the
-	 * result of that call either calls the <code>onDone</code>  listeners or
+	 * result of that call either calls the <code>onDone</code> listeners or
 	 * <code>onFail</code> listeners, when the call results in an exception. */
 	public Promise(Callable<T> callable)
 	{
@@ -33,18 +33,15 @@ public class Promise<T>
 		});
 	}
 	
-	/** Constructs a promise that runs the sub-promise of another type
-	 * and converts the resulting value with the given <code>converter</code>
-	 * @param subPromise the promise to execute in this promise
-	 * @param converter the function used to convert the result of the subPromise to the type of this {@link Promise}
-	 * @param <S> the returned type of the sub-promise
-	 */
-	public <S> Promise(Promise<S> subPromise, Function<S, T> converter)
+	/** Returns a new promise that will asynchronously await for this
+	 * promise to fulfill, then pass the result through the given function
+	 * and return it as its result. */
+	public <Next> Promise<Next> then(Function<T, Next> action)
 	{
-		this(() -> converter.apply(subPromise.await()));
+		return new Promise<>(() -> action.apply(await()));
 	}
 	
-	/** Adds a listener to the promise that will get executed when the promise is satisfied.
+	/** Adds a listener to the promise that will get executed when the promise is fulfilled.
 	 * @return this */
 	public Promise<T> onDone(Consumer<T> action)
 	{

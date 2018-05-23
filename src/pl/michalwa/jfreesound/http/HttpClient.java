@@ -3,7 +3,6 @@ package pl.michalwa.jfreesound.http;
 import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -11,7 +10,7 @@ import org.apache.http.util.EntityUtils;
 import pl.michalwa.jfreesound.auth.UnauthorizedException;
 
 /** A wrapper for the HTTP client, used to make HTTP requests */
-public abstract class Http
+public abstract class HttpClient
 {
 	/** Executes the given request and returns the response. */
 	public abstract HttpResponse execute(HttpUriRequest request) throws IOException;
@@ -38,11 +37,11 @@ public abstract class Http
 	
 	/** Returns the default HTTP client implementation
 	 * using {@link org.apache.http.client.HttpClient}. */
-	public static Http defaultClient()
+	public static HttpClient defaultInstance()
 	{
-		return new Http()
+		return new HttpClient()
 		{
-			private HttpClient http = HttpClientBuilder.create().build();
+			private org.apache.http.client.HttpClient http = HttpClientBuilder.create().build();
 			
 			@Override
 			public HttpResponse execute(HttpUriRequest request) throws IOException

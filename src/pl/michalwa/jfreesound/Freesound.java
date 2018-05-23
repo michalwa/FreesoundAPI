@@ -2,15 +2,12 @@ package pl.michalwa.jfreesound;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.function.Consumer;
 import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.auth.Authentication;
 import pl.michalwa.jfreesound.auth.OAuth2;
 import pl.michalwa.jfreesound.auth.TokenAuthentication;
-import pl.michalwa.jfreesound.http.Http;
+import pl.michalwa.jfreesound.http.HttpClient;
 import pl.michalwa.jfreesound.request.APIRequest;
 import pl.michalwa.jfreesound.utils.Promise;
 
@@ -26,12 +23,12 @@ public class Freesound
 	/** The authentication method used in API requests */
 	private Authentication auth;
 	/** The HTTP client used to make requests to the API */
-	private Http http;
+	private HttpClient http;
 	/** The parser used to parse json responses from the API */
 	private JsonParser json = new JsonParser();
 	
 	/** Constructs the API client */
-	private Freesound(Authentication auth, Http http)
+	private Freesound(Authentication auth, HttpClient http)
 	{
 		this.auth = auth;
 		this.http = http;
@@ -55,7 +52,7 @@ public class Freesound
 	 * @param <R> type of the response returned by the given request */
 	public <R> Promise<R> request(APIRequest<R> request)
 	{
-		return new Promise<>(rawRequest(request), request::processResponse);
+		return rawRequest(request).then(request::processResponse);
 	}
 	
 	/** Returns true, if this API client has
@@ -76,7 +73,7 @@ public class Freesound
 	{
 		/* Parameters */
 		private Authentication auth = null;
-		private Http http = null;
+		private HttpClient http = null;
 		
 		private Builder() {}
 		
@@ -96,7 +93,7 @@ public class Freesound
 		
 		/** Uses the given HTTP client to make http requests
 		 * to the API instead of the default one. */
-		public Builder withHttpClient(Http http)
+		public Builder withHttpClient(HttpClient http)
 		{
 			this.http = http;
 			return this;
@@ -109,7 +106,7 @@ public class Freesound
 			if(auth == null) throw new IllegalStateException("Authentication method must be set.");
 			
 			// Optional parameters
-			http = Optional.ofNullable(http).orElseGet(Http::defaultClient);
+			http = Optional.ofNullable(http).orElseGet(HttpClient::defaultInstance);
 			
 			return new Freesound(auth, http);
 		}
