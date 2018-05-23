@@ -11,10 +11,15 @@ import java.util.function.Function;
  * @param <T> the type of the returned value */
 public class Promise<T>
 {
+	/** The future task that executes the promise callable */
 	private Future<?> task;
+	/** A list of listeners for when the promise is fulfilled */
 	private List<Consumer<T>> onDone = new ArrayList<>();
+	/** A list of listeners for when the promise fails */
 	private List<Consumer<Exception>> onFail = new ArrayList<>();
+	/** Stores the evaluated value of the promise */
 	private volatile T value = null;
+	/** Stores any exception that will occur during the execution of the promise callable */
 	private volatile Exception exception = null;
 	
 	/** Performs a call to the given callable on a separate thread and depending on the
@@ -39,6 +44,13 @@ public class Promise<T>
 	public <Next> Promise<Next> then(Function<T, Next> action)
 	{
 		return new Promise<>(() -> action.apply(await()));
+	}
+	
+	/** Returns a new promise that will asynchronously await the promise
+	 * produced by the given function after calling with this promise's result */
+	public <Next> Promise<Next> thenPromise(Function<T, Promise<Next>> action)
+	{
+		return new Promise<>(() -> action.apply(await()).await());
 	}
 	
 	/** Adds a listener to the promise that will get executed when the promise is fulfilled.
@@ -93,7 +105,7 @@ public class Promise<T>
 		while(!task.isDone()) {
 			if(exception != null) throw exception;
 			else if(value != null) return value;
-			
+
 			if(System.currentTimeMillis() - beginTime > timeout)
 				throw new TimeoutException("Awaited promise has not been fulfilled.");
 			
@@ -122,7 +134,7 @@ public class Promise<T>
 	}
 	
 	/** Thrown when an awaited promise is cancelled */
-	public static class PromiseAwaitException extends RuntimeException
+	public static class PromiseAwaitException extends Exception
 	{
 		/** Initializes the exception with the given detailed message */
 		private PromiseAwaitException(String s)
