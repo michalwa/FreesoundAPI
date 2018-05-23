@@ -11,6 +11,7 @@ import java.util.function.Function;
  * @param <T> the type of the returned value */
 public class Promise<T>
 {
+	private static final ExecutorService executor = Executors.newCachedThreadPool();
 	/** The future task that executes the promise callable */
 	private Future<?> task;
 	/** A list of listeners for when the promise is fulfilled */
@@ -27,7 +28,7 @@ public class Promise<T>
 	 * <code>onFail</code> listeners, when the call results in an exception. */
 	public Promise(Callable<T> callable)
 	{
-		task = Executors.newSingleThreadExecutor().submit(() -> {
+		task = executor.submit(() -> {
 			try {
 				value = callable.call();
 				onDone.forEach(c -> c.accept(value));
