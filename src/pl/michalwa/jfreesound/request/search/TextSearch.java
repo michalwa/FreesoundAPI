@@ -1,6 +1,7 @@
 package pl.michalwa.jfreesound.request.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import pl.michalwa.jfreesound.request.SoundListRequest;
@@ -20,13 +21,11 @@ public class TextSearch extends SoundListRequest
 		this.query = query;
 	}
 	
-	/** Sets this text search request to include the field
-	 * with the given name in the results. See what fields you can include in the
-	 * <a href="https://freesound.org/docs/api/resources_apiv2.html#sound-instance">API documentation</a>.
-	 * @return this */
-	public TextSearch includeField(String field)
+	/** Sets this text search request to include all fields
+	 * with the given names in the results. */
+	public TextSearch includeFields(String... fields)
 	{
-		fields.add(field);
+		this.fields.addAll(Arrays.asList(fields));
 		return this;
 	}
 	

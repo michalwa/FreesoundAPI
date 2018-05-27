@@ -76,14 +76,37 @@ public class Promise<T>
 	 * exception, if the call also resulted in an exception. */
 	public T await() throws Exception
 	{
-		while(!task.isDone()) {
-			if(exception != null) throw exception;
-			else if(value != null) return value;
-			
-			if(task.isCancelled())
-				throw new PromiseAwaitException("Awaited promise has been cancelled.");
+		// Await 'done'
+		while(!task.isDone()) {}
+		
+		// Return the output
+		if(task.isCancelled()) {
+			throw new PromiseAwaitException("Awaited promise has been cancelled.");
+		} else if(exception != null) {
+			throw exception;
 		}
-		return null;
+		return value;
+	}
+	
+	/** Same as {@link Promise#await()}, but with a timeout. If the timeout runs
+	 * out and the promise hasn't been fulfilled,  this method will throw a {@link TimeoutException}.
+	 * @param timeout the timeout in milliseconds */
+	public T await(long timeout) throws Exception
+	{
+		// Await 'done'
+		long beginTime = System.currentTimeMillis();
+		while(!task.isDone()) {
+			if(System.currentTimeMillis() - beginTime > timeout)
+				throw new TimeoutException("Awaited promise has not been fulfilled.");
+		}
+		
+		// Return the output
+		if(task.isCancelled()) {
+			throw new PromiseAwaitException("Awaited promise has been cancelled.");
+		} else if(exception != null) {
+			throw exception;
+		}
+		return value;
 	}
 	
 	/** Calls {@link Promise#await()}, but catches and prints any exceptions */
@@ -93,25 +116,6 @@ public class Promise<T>
 			return await();
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/** Same as {@link Promise#await()}, but with a timeout. If the timeout runs
-	 * out and the promise hasn't been fulfilled,  this method will throw a {@link TimeoutException}.
-	 * @param timeout the timeout in milliseconds */
-	public T await(long timeout) throws Exception
-	{
-		long beginTime = System.currentTimeMillis();
-		while(!task.isDone()) {
-			if(exception != null) throw exception;
-			else if(value != null) return value;
-
-			if(System.currentTimeMillis() - beginTime > timeout)
-				throw new TimeoutException("Awaited promise has not been fulfilled.");
-			
-			if(task.isCancelled())
-				throw new PromiseAwaitException("Awaited promise has been cancelled.");
 		}
 		return null;
 	}

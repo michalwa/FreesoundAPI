@@ -5,7 +5,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import pl.michalwa.jfreesound.auth.UnauthorizedException;
 
@@ -41,7 +43,8 @@ public abstract class HttpClient
 	{
 		return new HttpClient()
 		{
-			private org.apache.http.client.HttpClient http = HttpClientBuilder.create().build();
+			private org.apache.http.client.HttpClient http = HttpClientBuilder.create()
+					.setConnectionManager(new PoolingHttpClientConnectionManager()).build();
 			
 			@Override
 			public HttpResponse execute(HttpUriRequest request) throws IOException

@@ -10,7 +10,7 @@ import pl.michalwa.jfreesound.data.Sound;
 public class SoundRequest extends APIRequest<Sound>
 {
 	private int id;
-	private static final Gson GSON = new Gson();
+	private final Gson gson = new Gson();
 	
 	/** @param id the id of the requested sound */
 	public SoundRequest(int id)
@@ -28,6 +28,6 @@ public class SoundRequest extends APIRequest<Sound>
 	@Override
 	public Sound processResponse(JsonObject response)
 	{
-		return GSON.fromJson(response, Sound.class);
+		return gson.fromJson(response, Sound.class);
 	}
 }

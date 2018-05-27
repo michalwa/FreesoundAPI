@@ -49,9 +49,9 @@ public class FreesoundTest
 	@Test
 	public void soundRequestTest()
 	{
-		Sound sound = freesound.request(new SoundRequest(1234)).safeAwait();
-		assertEquals(1234, sound.id());
-		assertEquals("180404D.mp3", sound.name());
+		Sound sound = freesound.request(new SoundRequest(81189)).safeAwait();
+		assertEquals(81189, sound.id());
+		assertEquals("Brunswiek.wav", sound.name());
 		
 		// Logging some stuff
 		System.out.println(sound.geotag());
@@ -76,9 +76,8 @@ public class FreesoundTest
 				.exclude("abc");
 		assertEquals("+\"foo\" +\"bar\" -\"abc\"", query.toString());
 		
-		TextSearch request = new TextSearch(query)
-				.includeField("id")
-				.includeField("url");
+		TextSearch request = new TextSearch(query);
+		request.includeFields("id", "url");
 		
 		Sound[] response = freesound.request(request).safeAwait();
 		System.out.println(response[0].url());
