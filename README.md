@@ -14,16 +14,16 @@ the original [API documentation](https://freesound.org/docs/api/).
 
 As a demonstration, try playing with this code:
 ```java
-import com.google.gson.JsonObject;
 import pl.michalwa.jfreesound.Freesound;
-import pl.michalwa.jfreesound.request.SimpleRequest;
+import pl.michalwa.jfreesound.request.SoundRequest;
+import pl.michalwa.jfreesound.data.Sound;
 
 public class JFreesoundDemo
 {
     public static void main(String[] args)
     {
         Freesound freesound = Freesound.builder().withToken("YOUR_API_TOKEN").build();
-        JsonObject sound = freesound.request(new SimpleRequest("sounds", 1234)).safeAwait();
+        Sound sound = freesound.request(new SoundRequest(1234)).safeAwait();
     }
 }
 ```

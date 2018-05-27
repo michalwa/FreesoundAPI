@@ -46,9 +46,8 @@ public class Freesound
 		});
 	}
 	
-	/** Submits a request to the API and returns the result
-	 * as an instance of the <code>TRequest</code> generic type
-	 * of the given request
+	/** Submits a request to the API and returns the result as an
+	 * instance of the <code>TResponse</code> generic type of the given request
 	 * @param <R> type of the response returned by the given request */
 	public <R> Promise<R> request(APIRequest<R> request)
 	{
