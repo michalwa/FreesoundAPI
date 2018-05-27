@@ -1,5 +1,6 @@
 package pl.michalwa.jfreesound.auth;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.Optional;
@@ -128,27 +129,27 @@ public class OAuth2 implements Authentication
 		/** Submits the request and returns a promise of a new OAuth2 instance */
 		public Promise<OAuth2> submit()
 		{
+			if(clientId == null || clientSecret == null)
+				throw new IllegalStateException("Credentials must be set before the request is submitted.");
+			
+			http = Optional.ofNullable(http).orElse(HttpClient.defaultInstance());
+			
+			// Build the request
+			HttpPostBuilder post = new HttpPostBuilder(Freesound.API_BASE_URL + "oauth2/access_token/")
+					.param("client_id", clientId)
+					.param("client_secret", clientSecret);
+			
+			if(refreshToken != null) {
+				post.param("grant_type", "refresh_token")
+				    .param("refresh_token", refreshToken);
+			} else if(authorizationCode != null) {
+				post.param("grant_type", "authorization_code")
+				    .param("code", authorizationCode);
+			} else {
+				throw new IllegalStateException("A request type must be set before the request is submitted.");
+			}
+			
 			return new Promise<>(() -> {
-				if(clientId == null || clientSecret == null)
-					throw new IllegalStateException("Credentials must be set before the request is submitted.");
-				
-				http = Optional.ofNullable(http).orElse(HttpClient.defaultInstance());
-				
-				// Build the request
-				HttpPostBuilder post = new HttpPostBuilder(Freesound.API_BASE_URL + "oauth2/access_token/")
-						.param("client_id", clientId)
-						.param("client_secret", clientSecret);
-				
-				if(refreshToken != null) {
-					post.param("grant_type", "refresh_token")
-							.param("refresh_token", refreshToken);
-				} else if(authorizationCode != null) {
-					post.param("grant_type", "authorization_code")
-							.param("code", authorizationCode);
-				} else {
-					throw new IllegalStateException("A request type must be set before the request is submitted.");
-				}
-				
 				// Execute the request & parse the response
 				JsonObject response = json.parse(http.executeAndRead(post.build())).getAsJsonObject();
 				if(response.has("access_token")) {

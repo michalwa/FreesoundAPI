@@ -29,11 +29,13 @@ public class OAuth2Test
 	@Test
 	public void authenticationTest()
 	{
-		/*OAuth2 auth = OAuth2.request()
-				.withCredentials(clientId, token)
-				.withAuthCode(authCode)
-				.submit()
-				.safeAwait();*/
+		/*
+		OAuth2 auth = OAuth2.request()
+		                    .withCredentials(clientId, token)
+		                    .withAuthCode(authCode)
+		                    .submit()
+		                    .safeAwait();
+		*/
 		
 		OAuth2 auth = new OAuth2(accessToken);
 		

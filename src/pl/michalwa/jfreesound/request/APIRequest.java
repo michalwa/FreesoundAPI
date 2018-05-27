@@ -2,11 +2,11 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.JsonObject;
 import java.net.URISyntaxException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
@@ -21,45 +21,37 @@ public abstract class APIRequest<TResponse>
 	/** Builds the HTTP request. */
 	public HttpUriRequest httpRequest()
 	{
-		String uri = Freesound.API_BASE_URL + uri();
-		Map<String, String> params = urlParams();
-		if(!params.isEmpty()) {
-			try {
-				URIBuilder builder = new URIBuilder(uri);
-				builder.addParameters(urlParams().entrySet().stream()
-						.map(e -> new BasicNameValuePair(e.getKey(), e.getValue()))
-						.collect(Collectors.toList()));
-				uri = builder.build().toString();
-			} catch(URISyntaxException e) {
-				e.printStackTrace();
-			}
+		try {
+			URIBuilder uri = new URIBuilder(Freesound.API_BASE_URL);
+			
+			// Process the path
+			List<String> path = new ArrayList<>();
+			Map<String, String> params = new HashMap<>();
+			prepare(path, params);
+			uri.setPath(uri.getPath() + String.join("/", path));
+			uri.setParameters(params.entrySet().stream()
+			                        .map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+			                        .collect(Collectors.toList()));
+			
+			return new HttpGet(uri.toString());
+		} catch(URISyntaxException e) {
+			e.printStackTrace();
 		}
-		return new HttpGet(uri);
+		
+		return null;
 	}
 	
-	/** Returns the request sub-url (the part
-	 * of the url after the base url) for this request.
-	 * For example, if the request url is
-	 * <code>https://freesound.org/apiv2/foo/bar/</code>,
-	 * then this method must return <code>foo/bar/</code>. */
-	protected abstract String uri();
+	/** The url path and query parameters are passed to this method for
+	 * population. The implementation of this method must populate the arrays
+	 * with the appropriate data.
+	 * @param path the URL path of this request - for example: if the desired
+	 *             request url is {@code (api-url)/foo/bar}, this method must
+	 *             populate the {@code path} list with the values {@code "foo"} and {@code "bar"}
+	 * @param params a map of query params in the request URL passed to the method
+	 *               for population */
+	protected abstract void prepare(List<String> path, Map<String, String> params);
 	
 	/** Returns the processed response of the
 	 * type specified by the return type of this request.*/
 	public abstract TResponse processResponse(JsonObject response);
-	
-	/** Returns the URL (GET) parameters for this request */
-	protected Map<String, String> urlParams()
-	{
-		return Collections.emptyMap();
-	}
-	
-	/** Joins the given uri parts into a request sub-uri
-	 * using the '/' (slash) separator. */
-	public static String joinURL(Object... parts)
-	{
-		StringJoiner joiner = new StringJoiner("/");
-		Stream.of(parts).forEach(obj -> joiner.add(obj.toString()));
-		return joiner.toString();
-	}
 }

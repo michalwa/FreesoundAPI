@@ -7,11 +7,11 @@ import pl.michalwa.jfreesound.data.Sound;
 /** Base class for all request that return a list of sounds */
 public abstract class SoundListRequest extends APIRequest<Sound[]>
 {
-	Gson gson = new Gson();
+	private static final Gson GSON = new Gson();
 	
 	@Override
 	public Sound[] processResponse(JsonObject response)
 	{
-		return gson.fromJson(response.get("results"), Sound[].class);
+		return GSON.fromJson(response.get("results"), Sound[].class);
 	}
 }

@@ -2,13 +2,15 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.util.List;
+import java.util.Map;
 import pl.michalwa.jfreesound.data.Sound;
 
 /** A simple sound-by-id request */
 public class SoundRequest extends APIRequest<Sound>
 {
 	private int id;
-	private Gson gson = new Gson();
+	private static final Gson GSON = new Gson();
 	
 	/** @param id the id of the requested sound */
 	public SoundRequest(int id)
@@ -17,14 +19,15 @@ public class SoundRequest extends APIRequest<Sound>
 	}
 	
 	@Override
-	protected String uri()
+	protected void prepare(List<String> path, Map<String, String> params)
 	{
-		return joinURL("sounds", id);
+		path.add("sounds");
+		path.add(String.valueOf(id));
 	}
 	
 	@Override
 	public Sound processResponse(JsonObject response)
 	{
-		return gson.fromJson(response, Sound.class);
+		return GSON.fromJson(response, Sound.class);
 	}
 }

@@ -1,6 +1,9 @@
 package pl.michalwa.jfreesound.request;
 
 import com.google.gson.JsonObject;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /** A basic request implementation. Should only
  * be used for testing. */
@@ -9,22 +12,22 @@ public class SimpleRequest extends APIRequest<JsonObject>
 	/** Parts of the request URL */
 	private Object[] parts;
 	
-	/** Constructs a simple request with the given sub-uri */
-	public SimpleRequest(String url)
+	/** Constructs a simple request with the given sub-path */
+	public SimpleRequest(String path)
 	{
-		parts = new String[] { url };
+		parts = new String[] { path };
 	}
 	
-	/** Constructs a simple request from the given sub-uri parts */
-	public SimpleRequest(Object... url)
+	/** Constructs a simple request from the given sub-path parts */
+	public SimpleRequest(Object... path)
 	{
-		parts = url;
+		parts = path;
 	}
 	
 	@Override
-	protected String uri()
+	protected void prepare(List<String> path, Map<String, String> params)
 	{
-		return joinURL(parts);
+		Stream.of(parts).map(Object::toString).forEach(path::add);
 	}
 	
 	@Override

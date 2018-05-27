@@ -16,7 +16,7 @@ import pl.michalwa.jfreesound.utils.Promise;
  * with {@link Freesound.Builder Freesound.builder()}. */
 public class Freesound
 {
-	/** The base uri that all API request URLs begin with.
+	/** The base path that all API request URLs begin with.
 	 * Used by the {@link pl.michalwa.jfreesound.request.APIRequest} class to construct request URLs. */
 	public static final String API_BASE_URL = "https://freesound.org/apiv2/";
 	
