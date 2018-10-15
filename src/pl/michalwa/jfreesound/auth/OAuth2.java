@@ -151,7 +151,7 @@ public class OAuth2 implements Authentication
 			
 			return new Promise<>(() -> {
 				// Execute the request & parse the response
-				JsonObject response = json.parse(http.executeAndRead(post.build())).getAsJsonObject();
+				JsonObject response = json.parse(http.execute(post.build()).body()).getAsJsonObject();
 				if(response.has("access_token")) {
 					OAuth2 auth = new OAuth2(response.get("access_token").getAsString());
 					auth.expiresIn = response.get("expires_in").getAsInt();

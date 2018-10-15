@@ -11,9 +11,8 @@ import pl.michalwa.jfreesound.http.HttpClient;
 import pl.michalwa.jfreesound.request.APIRequest;
 import pl.michalwa.jfreesound.utils.Promise;
 
-/** The main API client class. Used to make requests and retrieve
- * data from the API. To use this class, firstly build an instance
- * with {@link Freesound.Builder Freesound.builder()}. */
+/** The main API client class. Used to make requests and retrieve data from the API.
+ * To use this class, build an instance with {@link Freesound.Builder Freesound.builder()}. */
 public class Freesound
 {
 	/** The base path that all API request URLs begin with.
@@ -41,7 +40,7 @@ public class Freesound
 		return new Promise<>(() -> {
 			HttpUriRequest httpRequest = request.httpRequest();
 			auth.processRequest(httpRequest);
-			String response = http.executeAndRead(httpRequest);
+			String response = http.execute(httpRequest).body();
 			return json.parse(response).getAsJsonObject();
 		});
 	}
@@ -54,8 +53,7 @@ public class Freesound
 		return rawRequest(request).then(request::processResponse);
 	}
 	
-	/** Returns true, if this API client has
-	 * been successfully authenticated with OAuth2. */
+	/** Returns true, if this API client has been successfully authenticated with OAuth2 */
 	public boolean isOAuth2Authenticated()
 	{
 		return (auth instanceof OAuth2);
@@ -70,7 +68,6 @@ public class Freesound
 	/** Freesound instance builder */
 	public static final class Builder
 	{
-		/* Parameters */
 		private Authentication auth = null;
 		private HttpClient http = null;
 		

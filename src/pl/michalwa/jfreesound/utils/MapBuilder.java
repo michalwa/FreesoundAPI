@@ -23,12 +23,17 @@ public class MapBuilder<K, V>
 		return this;
 	}
 	
-	/** Sets the map to be built as unmodifable, if the parameter
-	 * <code>unmodifiable</code> is <code>true</code>. If <code>false</code>
-	 * is given, the built map will be modifiable. */
-	public MapBuilder<K, V> unmodifiable(boolean unmodifiable)
+	/** Sets the map to be built as modifiable */
+	public MapBuilder<K, V> modifiable()
 	{
-		this.unmodifiable = unmodifiable;
+		this.unmodifiable = false;
+		return this;
+	}
+	
+	/** Sets the map to be built as unmodifable */
+	public MapBuilder<K, V> unmodifiable()
+	{
+		this.unmodifiable = true;
 		return this;
 	}
 	

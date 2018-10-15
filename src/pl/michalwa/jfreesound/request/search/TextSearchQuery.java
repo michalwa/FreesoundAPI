@@ -56,6 +56,12 @@ public class TextSearchQuery
 		return this;
 	}
 	
+	/** Shorthand method, returns {@code new TextSearch(this)} */
+	public TextSearch search()
+	{
+		return new TextSearch(this);
+	}
+	
 	/** Renders the query to a string. */
 	@Override
 	public String toString()

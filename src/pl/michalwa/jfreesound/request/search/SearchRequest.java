@@ -13,9 +13,9 @@ public abstract class SearchRequest extends SoundListRequest
 	
 	/** Sets this text search request to include all fields
 	 * with the given names in the results. */
-	public SearchRequest includeField(String field)
+	public SearchRequest includeFields(String... field)
 	{
-		this.fields.add(field);
+		this.fields.addAll(Arrays.asList(field));
 		return this;
 	}
 	

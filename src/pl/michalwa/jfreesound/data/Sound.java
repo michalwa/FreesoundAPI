@@ -13,10 +13,8 @@ import pl.michalwa.jfreesound.request.SimilarSounds;
 @SuppressWarnings({"unused", "unchecked"})
 public class Sound
 {
-	/* The names of these fields correspond to
-	 * the JSON properties of the API response.
-	 * They must not be changed for Gson uses
-	 * those names to deserialize JSON objects */
+	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
+	 * They must not be changed for Gson uses those names to deserialize JSON objects */
 	private int id = 0;
 	private String url = null;
 	private String name = null;
