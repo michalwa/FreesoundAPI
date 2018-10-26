@@ -6,246 +6,242 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import pl.michalwa.jfreesound.request.APIRequest;
 import pl.michalwa.jfreesound.request.SimilarSounds;
 
 /** The response data structure of the
  * {@link pl.michalwa.jfreesound.request.SoundRequest SoundRequest} */
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unchecked", "FieldCanBeLocal"})
 public class Sound
 {
 	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
 	 * They must not be changed for Gson uses those names to deserialize JSON objects */
-	private int id = 0;
+	private int id = -1;
 	private String url = null;
 	private String name = null;
-	private Set<String> tags = Collections.EMPTY_SET;
+	private Set<String> tags = null;
 	private String description = null;
 	private String geotag = null;
 	private String created = null;
 	private String license = null;
 	private String type = null;
-	private int channels = 0;
-	private int filesize = 0;
-	private int bitrate = 0;
-	private int bitdepth = 0;
-	private int duration = 0;
-	private int samplerate = 0;
+	private int channels = -1;
+	private int filesize = -1;
+	private int bitrate = -1;
+	private int bitdepth = -1;
+	private int duration = -1;
+	private int samplerate = -1;
 	private String username = null;
-	private String pack = null;
 	private String download = null;
 	private String bookmark = null;
 	private Map<String, String> previews = null;
 	private Map<String, String> images = null;
-	private int num_downloads = 0;
-	private float avg_ratings = 0.0f;
-	private int num_ratings = 0;
+	private int num_downloads = -1;
+	private float avg_ratings = -1.0f;
+	private int num_ratings = -1;
 	private String rate = null;
 	private String comments = null;
-	private int num_comments = 0;
+	private int num_comments = -1;
 	private String comment = null;
-	private String similar_sounds = null;
-	private Object analysis = null;
 	private String analysis_stats = null;
 	private String analysis_frames = null;
 
-	/** The sound's ID
-	 * @return 'id' field value */
+	/** The sound's ID */
 	public int id()
 	{
+		if(id == -1) throw new FieldNotInitializedException(getClass(), "id");
 		return id;
 	}
 
-	/** URL on the freesound.org website to view the sound
-	 * @return 'url' field value */
+	/** URL on the freesound.org website to view the sound */
 	public String url()
 	{
+		if(url == null) throw new FieldNotInitializedException(getClass(), "url");
 		return url;
 	}
 
-	/** Name of the sound
-	 * @return 'name' field value */
+	/** Name of the sound */
 	public String name()
 	{
+		if(name == null) throw new FieldNotInitializedException(getClass(), "name");
 		return name;
 	}
 
-	/** A set of tags assigned to this sound
-	 * @return 'tags' field value */
+	/** A set of tags assigned to this sound */
 	public Set<String> tags()
 	{
+		if(tags == null) throw new FieldNotInitializedException(getClass(), "tags");
 		return Collections.unmodifiableSet(tags);
 	}
 
-	/** The description of the sound
-	 * @return 'description' field value */
+	/** The description of the sound */
 	public String description()
 	{
+		if(description == null) throw new FieldNotInitializedException(getClass(), "description");
 		return description;
 	}
 
-	/** The geotag assigned to this sound
-	 * @return 'geotag' field value */
+	/** The geotag assigned to this sound */
 	public Geotag geotag()
 	{
-		return Optional.ofNullable(geotag).map(Geotag::new).orElse(null);
+		if(geotag == null) throw new FieldNotInitializedException(getClass(), "geotag");
+		return new Geotag(geotag);
 	}
 
-	/** The DateTime when the sound was created
-	 * @return 'created' field value */
+	/** The DateTime when the sound was created */
 	public LocalDateTime created()
 	{
+		if(created == null) throw new FieldNotInitializedException(getClass(), "created");
 		return LocalDateTime.parse(created);
 	}
 
-	/** The license under which the sound is available
-	 * @return 'license' field value */
+	/** The license under which the sound is available */
 	public String license()
 	{
+		if(license == null) throw new FieldNotInitializedException(getClass(), "license");
 		return license;
 	}
 
-	/** The type of the sound (wav, aif, aiff, mp3, m4a or flac)
-	 * @return 'type' field value */
+	/** The type of the sound (wav, aif, aiff, mp3, m4a or flac) */
 	public Type type()
 	{
+		if(type == null) throw new FieldNotInitializedException(getClass(), "type");
 		return Stream.of(Type.values())
 				.filter(t -> t.type.equals(type))
 				.findFirst()
 				.orElse(null);
 	}
 
-	/** The number of channels that the sound has
-	 * @return 'channels' field value */
+	/** The number of channels that the sound has */
 	public int channels()
 	{
+		if(channels == -1) throw new FieldNotInitializedException(getClass(), "channels");
 		return channels;
 	}
 
-	/** Size of the file where the sound is stored (in bytes)
-	 * @return 'filesize' field value */
+	/** Size of the file where the sound is stored (in bytes) */
 	public int fileSize()
 	{
+		if(filesize == -1) throw new FieldNotInitializedException(getClass(), "filesize");
 		return filesize;
 	}
 
-	/** Bitrate of the sound
-	 * @return 'bitrate' field value */
+	/** Bitrate of the sound */
 	public int bitrate()
 	{
+		if(bitrate == -1) throw new FieldNotInitializedException(getClass(), "bitrate");
 		return bitrate;
 	}
 
-	/** Bit depth of the sound
-	 * @return 'bitdepth' field value */
+	/** Bit depth of the sound */
 	public int bitDepth()
 	{
+		if(bitdepth == -1) throw new FieldNotInitializedException(getClass(), "bitdepth");
 		return bitdepth;
 	}
 
-	/** Duration of the sound, in seconds
-	 * @return 'duration' field value */
+	/** Duration of the sound, in seconds */
 	public int duration()
 	{
+		if(duration == -1) throw new FieldNotInitializedException(getClass(), "duration");
 		return duration;
 	}
 
-	/** The sample rate of the sound
-	 * @return 'samplerate' field value */
+	/** The sample rate of the sound */
 	public int sampleRate()
 	{
+		if(samplerate == -1) throw new FieldNotInitializedException(getClass(), "samplerate");
 		return samplerate;
 	}
 
-	/** Name of the author of the sound
-	 * @return 'username' field value */
+	/** Name of the author of the sound */
 	public String authorName()
 	{
+		if(username == null) throw new FieldNotInitializedException(getClass(), "username");
 		return username;
 	}
 
-	/** URL of the pack the sound is a part of (API resource)
-	 * @return 'pack' field value */
-	public String packUrl()
+	/** Returns a request for the pack this sound belongs to */
+	public APIRequest<?> packUrl()
 	{
-		return pack;
+		// TODO: Pack request and data structure
+		throw new UnsupportedOperationException("Not implemented.");
 	}
 
-	/** URL to download the sound
-	 * @return 'download' field value */
+	/** URL to download the sound */
 	public String downloadUrl()
 	{
+		if(download == null) throw new FieldNotInitializedException(getClass(), "download");
 		return download;
 	}
 
-	/** URL for bookmarking the sound
-	 * @return 'bookmark' field value */
+	/** URL for bookmarking the sound */
 	public String bookmarkUrl()
 	{
+		if(bookmark == null) throw new FieldNotInitializedException(getClass(), "bookmark");
 		return bookmark;
 	}
 
-	/** Returns a URL pointing to the sound preview of the specified type
-	 * @return 'previews' field value associated with the given {@link Sound.Preview} key */
+	/** Returns a URL pointing to the sound preview of the specified type */
 	public String previewUrl(Preview type)
 	{
-		if(previews == null) return null;
+		if(previews == null) throw new FieldNotInitializedException(getClass(), "previews");
 		return previews.get(type.key);
 	}
 
-	/** Returns a URL pointing to the visualization image of the sound of the specified type
-	 * @return 'images' field value associated with the given {@link Sound.Image} key */
+	/** Returns a URL pointing to the visualization image of the sound of the specified type */
 	public String imageUrl(Image type)
 	{
-		if(images == null) return null;
+		if(images == null) throw new FieldNotInitializedException(getClass(), "images");
 		return images.get(type.key);
 	}
 
-	/** Number of downloads
-	 * @return 'num_downloads' field value */
+	/** Number of downloads */
 	public int numDownloads()
 	{
+		if(num_downloads == -1) throw new FieldNotInitializedException(getClass(), "num_downloads");
 		return num_downloads;
 	}
 
-	/** The average rating of the sound
-	 * @return 'avg_ratings' field value */
+	/** The average rating of the sound */
 	public float averageRatings()
 	{
+		if(avg_ratings == -1.0f) throw new FieldNotInitializedException(getClass(), "avg_ratings");
 		return avg_ratings;
 	}
 
-	/** Number of ratings
-	 * @return 'num_ratings' field value */
+	/** Number of ratings */
 	public int numRatings()
 	{
+		if(num_ratings == -1) throw new FieldNotInitializedException(getClass(), "num_ratings");
 		return num_ratings;
 	}
 
-	/** URL for rating the sound
-	 * @return 'rate' field value */
+	/** URL for rating the sound */
 	public String rateUrl()
 	{
+		if(rate == null) throw new FieldNotInitializedException(getClass(), "rate");
 		return rate;
 	}
 
-	/** URL of a paginated list of the comments of the sound
-	 * @return 'comments' field value */
+	/** URL of a paginated list of the comments of the sound */
 	public String commentsUrl()
 	{
+		if(comments == null) throw new FieldNotInitializedException(getClass(), "comments");
 		return comments;
 	}
 
-	/** Number of comments
-	 * @return 'num_comments' field value */
+	/** Number of comments */
 	public int numComments()
 	{
+		if(num_ratings == -1) throw new FieldNotInitializedException(getClass(), "num_ratings");
 		return num_comments;
 	}
 
-	/** URL to comment the sound
-	 * @return 'comment' field value */
+	/** URL to comment the sound */
 	public String commentUrl()
 	{
+		if(comment == null) throw new FieldNotInitializedException(getClass(), "comment");
 		return comment;
 	}
 	
@@ -253,37 +249,37 @@ public class Sound
 	 * The 'similar_sounds' sound info field is not needed for this method to work. */
 	public SimilarSounds similarSounds()
 	{
-		return new SimilarSounds(id);
+		return new SimilarSounds(id());
 	}
 
-	/** Requested descriptors information or `null` if no descriptors have been specified in the request
-	 * @return 'analysis' field value */
-	public Object analysis()
+	/** Requested descriptors information or `null` if no descriptors have been specified in the request */
+	public APIRequest<?> analysis()
 	{
-		return analysis;
+		// TODO: Sound analysis request and data structure
+		throw new UnsupportedOperationException("Not implemented.");
 	}
 
-	/** URL pointing to complete analysis results
-	 * @return 'analysis_stats' field value */
+	/** URL pointing to complete analysis results */
 	public String analysisStatsUrl()
 	{
+		if(analysis_stats == null) throw new FieldNotInitializedException(getClass(), "analysis_stats");
 		return analysis_stats;
 	}
 
-	/** URL for retrieving analysis information for each frame of the sound
-	 * @return 'analysis_frames' field value */
+	/** URL for retrieving analysis information for each frame of the sound */
 	public String analysisFramesUrl()
 	{
+		if(analysis_frames == null) throw new FieldNotInitializedException(getClass(), "analysis_frames");
 		return analysis_frames;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "Sound[" + id() + "](" + name() + ")";
+		return "Sound " + (id != -1 ? "#" + id : "") + (name != null ? " \"" + name + "\"" : "");
 	}
 	
-	/** Enum containing all known sound types */
+	/** Supported sound types */
 	public enum Type
 	{
 		WAV("wav"),
