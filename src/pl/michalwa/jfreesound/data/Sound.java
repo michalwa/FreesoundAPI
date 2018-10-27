@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 import pl.michalwa.jfreesound.request.APIRequest;
+import pl.michalwa.jfreesound.request.PackRequest;
 import pl.michalwa.jfreesound.request.SimilarSounds;
 
 /** The response data structure of the
@@ -31,6 +32,7 @@ public class Sound
 	private int duration = -1;
 	private int samplerate = -1;
 	private String username = null;
+	private String pack = null;
 	private String download = null;
 	private String bookmark = null;
 	private Map<String, String> previews = null;
@@ -160,11 +162,16 @@ public class Sound
 		return username;
 	}
 
-	/** Returns a request for the pack this sound belongs to */
-	public APIRequest<?> packUrl()
+	/** Returns a request for the pack this sound belongs to. If the sound does not belong to a pack,
+	 * returns {@code null}. */
+	public PackRequest pack()
 	{
-		// TODO: Pack request and data structure
-		throw new UnsupportedOperationException("Not implemented.");
+		if(pack == null) throw new FieldNotInitializedException(getClass(), "pack");
+		if(pack.isEmpty()) return null;
+		
+		String packUrl = pack.substring(0, pack.length() - 1);
+		int id = Integer.parseInt(packUrl.substring(packUrl.lastIndexOf("/") + 1));
+		return new PackRequest(id);
 	}
 
 	/** URL to download the sound */
