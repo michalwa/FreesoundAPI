@@ -1,5 +1,6 @@
 package pl.michalwa.jfreesound.request;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -41,9 +42,8 @@ public abstract class APIRequest<TResponse>
 		return null;
 	}
 	
-	/** The url path and query parameters are passed to this method for
-	 * population. The implementation of this method must populate the arrays
-	 * with the appropriate data.
+	/** The url path and query parameters are passed to this method for population.
+	 * The implementation of this method must populate the arrays with the appropriate data.
 	 * @param path the URL path of this request - for example: if the desired
 	 *             request url is {@code (api-url)/foo/bar}, this method must
 	 *             populate the {@code path} list with the values {@code "foo"} and {@code "bar"}
@@ -51,7 +51,6 @@ public abstract class APIRequest<TResponse>
 	 *               for population */
 	protected abstract void prepare(List<String> path, Map<String, String> params);
 	
-	/** Returns the processed response of the
-	 * type specified by the return type of this request.*/
-	public abstract TResponse processResponse(JsonObject response);
+	/** Returns the processed (deserialized) response of the type specified by the return type of this request.*/
+	public abstract TResponse processResponse(JsonObject response, Gson gson);
 }

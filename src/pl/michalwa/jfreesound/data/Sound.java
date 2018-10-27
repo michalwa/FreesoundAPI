@@ -3,7 +3,6 @@ package pl.michalwa.jfreesound.data;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import pl.michalwa.jfreesound.request.APIRequest;
@@ -11,7 +10,7 @@ import pl.michalwa.jfreesound.request.SimilarSounds;
 
 /** The response data structure of the
  * {@link pl.michalwa.jfreesound.request.SoundRequest SoundRequest} */
-@SuppressWarnings({"unchecked", "FieldCanBeLocal"})
+@SuppressWarnings({"FieldCanBeLocal"})
 public class Sound
 {
 	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
@@ -89,7 +88,7 @@ public class Sound
 	}
 
 	/** The DateTime when the sound was created */
-	public LocalDateTime created()
+	public LocalDateTime dateCreated()
 	{
 		if(created == null) throw new FieldNotInitializedException(getClass(), "created");
 		return LocalDateTime.parse(created);

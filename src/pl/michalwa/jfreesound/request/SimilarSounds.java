@@ -8,7 +8,7 @@ import java.util.Map;
 public class SimilarSounds extends SoundListRequest
 {
 	/** The id of the sound */
-	private int id;
+	private final int id;
 	
 	public SimilarSounds(int id)
 	{

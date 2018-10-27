@@ -1,5 +1,6 @@
 package pl.michalwa.jfreesound.request;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 public class SimpleRequest extends APIRequest<JsonObject>
 {
 	/** Parts of the request URL */
-	private Object[] parts;
+	private final Object[] parts;
 	
 	/** Constructs a simple request with the given sub-path */
 	public SimpleRequest(String path)
@@ -31,7 +32,7 @@ public class SimpleRequest extends APIRequest<JsonObject>
 	}
 	
 	@Override
-	public JsonObject processResponse(JsonObject response)
+	public JsonObject processResponse(JsonObject response, Gson gson)
 	{
 		return response;
 	}

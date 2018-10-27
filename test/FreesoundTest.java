@@ -2,23 +2,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import pl.michalwa.jfreesound.Freesound;
+import pl.michalwa.jfreesound.data.Pack;
 import pl.michalwa.jfreesound.data.Sound;
-import pl.michalwa.jfreesound.request.SimilarSounds;
-import pl.michalwa.jfreesound.request.SimpleRequest;
-import pl.michalwa.jfreesound.request.SoundRequest;
-import pl.michalwa.jfreesound.request.search.TextSearchQuery;
+import pl.michalwa.jfreesound.data.User;
+import pl.michalwa.jfreesound.request.*;
 import pl.michalwa.jfreesound.request.search.TextSearch;
+import pl.michalwa.jfreesound.request.search.TextSearchQuery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class FreesoundTest
 {
-	String clientId, token;
-	Freesound freesound;
+	private Freesound freesound;
 	
 	@Before
 	public void setup()
@@ -26,18 +27,16 @@ public class FreesoundTest
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
 		JsonObject config = new JsonParser().parse(reader).getAsJsonObject();
-		clientId = config.get("id").getAsString();
-		token = config.get("token").getAsString();
+		String token = config.get("token").getAsString();
 		
 		// Build the test object
 		freesound = Freesound.builder().withToken(token).build();
 	}
 	
 	@Test
-	public void simpleRequestTest()
+	public void simpleRequest()
 	{
 		SimpleRequest request = new SimpleRequest("sounds", 1234);
-		System.out.println(request.httpRequest().getURI());
 		JsonObject response = freesound.request(request).safeAwait();
 		
 		assertNotNull(response);
@@ -47,27 +46,26 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void soundRequestTest()
+	public void soundInstance()
 	{
 		Sound sound = freesound.request(new SoundRequest(81189)).safeAwait();
 		assertEquals(81189, sound.id());
 		assertEquals("Brunswiek.wav", sound.name());
 		
-		// Logging some stuff
 		System.out.println(sound.geotag());
 		System.out.println(sound.previewUrl(Sound.Preview.HIGH_QUALITY_MP3));
 		System.out.println(sound.imageUrl(Sound.Image.WAVEFORM_LARGE));
 	}
 	
 	@Test
-	public void similarSoundsRequestTest()
+	public void similarSounds()
 	{
 		Sound[] response = freesound.request(new SimilarSounds(1234)).safeAwait();
 		System.out.println(Arrays.toString(response));
 	}
 	
 	@Test
-	public void textSearchTest()
+	public void textSearch()
 	{
 		TextSearchQuery query = new TextSearchQuery()
 				.include("foo")
@@ -83,5 +81,26 @@ public class FreesoundTest
 		System.out.println(response[0].url());
 		
 		assertEquals(34123, response[0].id());
+	}
+	
+	@Test
+	public void userInstance()
+	{
+		User user = freesound.user("michalwa2003").safeAwait();
+		assertEquals("michalwa2003", user.username());
+		assertEquals(LocalDateTime.parse("2015-05-07T19:09:17.983879"), user.dateJoined());
+		
+		System.out.println(user);
+	}
+	
+	@Test
+	public void packInstance()
+	{
+		Pack pack = freesound.pack(9678).safeAwait();
+		
+		assertEquals(9678, pack.id());
+		assertEquals("Zoo", pack.name());
+		
+		System.out.println(pack);
 	}
 }

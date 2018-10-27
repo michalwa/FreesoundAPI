@@ -1,5 +1,6 @@
 package pl.michalwa.jfreesound;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.Optional;
@@ -7,8 +8,11 @@ import org.apache.http.client.methods.HttpUriRequest;
 import pl.michalwa.jfreesound.auth.Authentication;
 import pl.michalwa.jfreesound.auth.OAuth2;
 import pl.michalwa.jfreesound.auth.TokenAuthentication;
+import pl.michalwa.jfreesound.data.Pack;
+import pl.michalwa.jfreesound.data.Sound;
+import pl.michalwa.jfreesound.data.User;
 import pl.michalwa.jfreesound.http.HttpClient;
-import pl.michalwa.jfreesound.request.APIRequest;
+import pl.michalwa.jfreesound.request.*;
 import pl.michalwa.jfreesound.utils.Promise;
 
 /** The main API client class. Used to make requests and retrieve data from the API.
@@ -20,17 +24,39 @@ public class Freesound
 	public static final String API_BASE_URL = "https://freesound.org/apiv2/";
 	
 	/** The authentication method used in API requests */
-	private Authentication auth;
+	private final Authentication auth;
 	/** The HTTP client used to make requests to the API */
-	private HttpClient http;
+	private HttpClient http = HttpClient.defaultInstance();
 	/** The parser used to parse json responses from the API */
 	private JsonParser json = new JsonParser();
+	/** The gson instance used to process responses */
+	private Gson gson = new Gson();
 	
 	/** Constructs the API client */
-	private Freesound(Authentication auth, HttpClient http)
+	private Freesound(Authentication auth)
 	{
 		this.auth = auth;
-		this.http = http;
+	}
+	
+	/** Uses the given {@link HttpClient} instance to make HTTP requests */
+	public Freesound use(HttpClient http)
+	{
+		if(http != null) this.http = http;
+		return this;
+	}
+	
+	/** Uses the given {@link JsonParser} to parse responses */
+	public Freesound use(JsonParser json)
+	{
+		if(json != null) this.json = json;
+		return this;
+	}
+	
+	/** Uses the given {@link Gson} instance to deserialize responses */
+	public Freesound use(Gson gson)
+	{
+		if(gson != null) this.gson = gson;
+		return this;
 	}
 	
 	/** Submits a request to the API and returns the result as JSON.
@@ -50,13 +76,37 @@ public class Freesound
 	 * @param <R> type of the response returned by the given request */
 	public <R> Promise<R> request(APIRequest<R> request)
 	{
-		return rawRequest(request).then(request::processResponse);
+		return rawRequest(request).then(response -> request.processResponse(response, gson));
 	}
 	
 	/** Returns true, if this API client has been successfully authenticated with OAuth2 */
 	public boolean isOAuth2Authenticated()
 	{
 		return (auth instanceof OAuth2);
+	}
+	
+	/** Shorthand method - executes a {@link SimpleRequest} and returns the resulting promise */
+	public Promise<JsonObject> request(Object... path)
+	{
+		return request(new SimpleRequest(path));
+	}
+	
+	/** Shorthand method - executes a {@link SoundRequest} and returns the resulting promise */
+	public Promise<Sound> sound(int id)
+	{
+		return request(new SoundRequest(id));
+	}
+	
+	/** Shorthand method - executes a {@link UserRequest} and returns the resulting promise */
+	public Promise<User> user(String username)
+	{
+		return request(new UserRequest(username));
+	}
+	
+	/** Shorthand method - executes a {@link PackRequest} and returns the resulting promise */
+	public Promise<Pack> pack(int id)
+	{
+		return request(new PackRequest(id));
 	}
 	
 	/** Returns the default Freesound instance builder */
@@ -69,7 +119,6 @@ public class Freesound
 	public static final class Builder
 	{
 		private Authentication auth = null;
-		private HttpClient http = null;
 		
 		private Builder() {}
 		
@@ -87,24 +136,11 @@ public class Freesound
 			return this;
 		}
 		
-		/** Uses the given HTTP client to make http requests
-		 * to the API instead of the default one. */
-		public Builder withHttpClient(HttpClient http)
-		{
-			this.http = http;
-			return this;
-		}
-		
 		/** Builds the API client instance */
 		public Freesound build()
 		{
-			// Required parameters
 			if(auth == null) throw new IllegalStateException("Authentication method must be set.");
-			
-			// Optional parameters
-			http = Optional.ofNullable(http).orElseGet(HttpClient::defaultInstance);
-			
-			return new Freesound(auth, http);
+			return new Freesound(auth);
 		}
 	}
 }

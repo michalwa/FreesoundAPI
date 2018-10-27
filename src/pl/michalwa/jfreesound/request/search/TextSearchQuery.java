@@ -11,10 +11,10 @@ public class TextSearchQuery
 {
 	/** Search terms marked as 'included'. The sound has to
 	 * contain the included terms in order to satisfy the query. */
-	private List<String> included;
+	private final List<String> included;
 	/** Search terms marked as 'excluded'. The sound must not
 	 * contain the excluded terms in order to satisfy the query. */
-	private List<String> excluded;
+	private final List<String> excluded;
 	
 	/** Constructs an empty text search query. An empty
 	 * query matches all sounds by default. */

@@ -4,7 +4,7 @@ package pl.michalwa.jfreesound.request.search;
 public class Sorting
 {
 	/** The actual {@code sort} parameter value */
-	private String sort;
+	private final String sort;
 	
 	/** Returns a default sorting */
 	public Sorting()

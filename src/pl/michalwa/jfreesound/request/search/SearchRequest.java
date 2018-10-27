@@ -1,6 +1,7 @@
 package pl.michalwa.jfreesound.request.search;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import pl.michalwa.jfreesound.request.SoundListRequest;
 
 /** Base search request class */

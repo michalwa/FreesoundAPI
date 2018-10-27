@@ -113,6 +113,12 @@ public class User
 		throw new UnsupportedOperationException("Not implemented.");
 	}
 	
+	@Override
+	public String toString()
+	{
+		return "User" + (username != null ? " \"" + username + "\"" : "");
+	}
+	
 	/** Supported avatar image sizes */
 	public enum AvatarSize
 	{

@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.*;
 import pl.michalwa.jfreesound.data.Sound;
-import pl.michalwa.jfreesound.request.search.SearchRequest;
 
 /** Base class for all request that return a list of sounds */
 public abstract class SoundListRequest extends APIRequest<Sound[]>
 {
-	private final Gson gson = new Gson();
 	/** The fields to include in the results */
 	private final Set<String> fields = new HashSet<>();
 	/** The selected page of the response */
@@ -31,7 +29,7 @@ public abstract class SoundListRequest extends APIRequest<Sound[]>
 	}
 	
 	@Override
-	public Sound[] processResponse(JsonObject response)
+	public Sound[] processResponse(JsonObject response, Gson gson)
 	{
 		return gson.fromJson(response.get("results"), Sound[].class);
 	}
