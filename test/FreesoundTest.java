@@ -25,7 +25,7 @@ public class FreesoundTest
 	public void setup()
 	{
 		// Setup the HTTP client
-		Freesound.setHttpClient(new DefaultHttpClient());
+		Freesound.setHttpClient(new ApacheHttpClient());
 		
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
@@ -37,10 +37,10 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void simpleRequest()
+	public void simpleRequest() throws Exception
 	{
 		SimpleRequest request = new SimpleRequest("sounds", 1234);
-		JsonObject response = freesound.request(request).safeAwait();
+		JsonObject response = freesound.request(request).await();
 		
 		assertNotNull(response);
 		assertEquals(1234,                   response.get("id").getAsInt());
@@ -49,9 +49,9 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void soundInstance()
+	public void soundInstance() throws Exception
 	{
-		Sound sound = freesound.request(new SoundRequest(81189)).safeAwait();
+		Sound sound = freesound.request(new SoundRequest(81189)).await();
 		assertEquals(81189, sound.id());
 		assertEquals("Brunswiek.wav", sound.name());
 		
@@ -61,14 +61,14 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void similarSounds()
+	public void similarSounds() throws Exception
 	{
-		Sound[] response = freesound.request(new SimilarSounds(1234)).safeAwait();
+		Sound[] response = freesound.request(new SimilarSounds(1234)).await();
 		System.out.println(Arrays.toString(response));
 	}
 	
 	@Test
-	public void textSearch()
+	public void textSearch() throws Exception
 	{
 		TextSearchQuery query = new TextSearchQuery()
 				.include("foo")
@@ -81,15 +81,15 @@ public class FreesoundTest
 		TextSearch request = new TextSearch(query);
 		request.includeFields("name");
 		
-		Sound[] response = freesound.request(request).safeAwait();
+		Sound[] response = freesound.request(request).await();
 		
 		assertEquals("01-bottle-water-sparkle.flac", response[0].name());
 	}
 	
 	@Test
-	public void userInstance()
+	public void userInstance() throws Exception
 	{
-		User user = freesound.user("michalwa2003").safeAwait();
+		User user = freesound.user("michalwa2003").await();
 		assertEquals("michalwa2003", user.username());
 		assertEquals(LocalDateTime.parse("2015-05-07T19:09:17.983879"), user.dateJoined());
 		
@@ -97,9 +97,9 @@ public class FreesoundTest
 	}
 	
 	@Test
-	public void packInstance()
+	public void packInstance() throws Exception
 	{
-		Pack pack = freesound.pack(9678).safeAwait();
+		Pack pack = freesound.pack(9678).await();
 		
 		assertEquals(9678, pack.id());
 		assertEquals("Zoo", pack.name());

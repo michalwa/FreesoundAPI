@@ -62,4 +62,4 @@ the token and other data can be provided to the library directly *(see [usage](#
 
 Common HTTP client implementation:
   + [Apache HttpClient v4.5.5](https://hc.apache.org/httpcomponents-client-4.5.x/) licensed under [Apache License 2.0](http://www.apache.org/licenses/) - [*(download)*](https://hc.apache.org/downloads.cgi)  
-    See: [DefaultHttpClient.java](/test/DefaultHttpClient.java)
+    See: [ApacheHttpClient.java](/test/ApacheHttpClient.java)

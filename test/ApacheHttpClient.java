@@ -17,7 +17,7 @@ import pl.michalwa.jfreesound.http.*;
 /**
  * Implements the {@link HttpClient} interface with Apache's HTTP client library.
  */
-public class DefaultHttpClient implements HttpClient
+public class ApacheHttpClient implements HttpClient
 {
 	private final org.apache.http.client.HttpClient http = HttpClientBuilder.create()
 		.setConnectionManager(new PoolingHttpClientConnectionManager()).build();

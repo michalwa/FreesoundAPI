@@ -18,7 +18,7 @@ public class OAuth2Test
 	public void setup()
 	{
 		// Setup the HTTP client
-		Freesound.setHttpClient(new DefaultHttpClient());
+		Freesound.setHttpClient(new ApacheHttpClient());
 		
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
