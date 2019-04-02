@@ -4,13 +4,19 @@ import java.util.List;
 import java.util.Map;
 import pl.michalwa.jfreesound.request.SoundListRequest;
 
-/** Base search request class */
+/**
+ * Base search request class
+ */
 public abstract class SearchRequest extends SoundListRequest
 {
 	/** Seach sorting order */
 	private Sorting sorting = null;
 	
-	/** Sets the sorting */
+	/**
+	 * Sets the sorting
+	 *
+	 * @param sorting the sorting order
+	 */
 	public SearchRequest sortWith(Sorting sorting)
 	{
 		this.sorting = sorting;

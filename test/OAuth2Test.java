@@ -8,14 +8,18 @@ import pl.michalwa.jfreesound.Freesound;
 import pl.michalwa.jfreesound.auth.OAuth2;
 import pl.michalwa.jfreesound.request.SimpleRequest;
 
+@SuppressWarnings("unused")
 public class OAuth2Test
 {
-	String clientId, token, authCode, refreshToken, accessToken;
-	Freesound freesound;
+	private String clientId, token, authCode, refreshToken, accessToken;
+	private Freesound freesound;
 	
 	@Before
 	public void setup()
 	{
+		// Setup the HTTP client
+		Freesound.setHttpClient(new DefaultHttpClient());
+		
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
 		JsonObject config = new JsonParser().parse(reader).getAsJsonObject();

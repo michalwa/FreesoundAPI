@@ -2,10 +2,13 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.*;
 import pl.michalwa.jfreesound.data.Sound;
 
-/** Base class for all request that return a list of sounds */
+/**
+ * Base class for all request that return a list of sounds
+ */
 public abstract class SoundListRequest extends APIRequest<Sound[]>
 {
 	/** The fields to include in the results */
@@ -13,15 +16,22 @@ public abstract class SoundListRequest extends APIRequest<Sound[]>
 	/** The selected page of the response */
 	private int page = 0;
 	
-	/** Sets this text search request to include all fields
-	 * with the given names in the results. */
-	public SoundListRequest includeFields(String... field)
+	/**
+	 * Sets this text search request to include all fields with the given names in the results.
+	 *
+	 * @param fields the fields to include
+	 */
+	public SoundListRequest includeFields(String... fields)
 	{
-		this.fields.addAll(Arrays.asList(field));
+		this.fields.addAll(Arrays.asList(fields));
 		return this;
 	}
 	
-	/** Selects the specified page of the response */
+	/**
+	 * Selects the specified page of the response
+	 *
+	 * @param page the page index
+	 */
 	public SoundListRequest setPage(int page)
 	{
 		this.page = page;
@@ -29,7 +39,7 @@ public abstract class SoundListRequest extends APIRequest<Sound[]>
 	}
 	
 	@Override
-	public Sound[] processResponse(JsonObject response, Gson gson)
+	public Sound[] processResponse(JsonObject response, JsonParser json, Gson gson)
 	{
 		return gson.fromJson(response.get("results"), Sound[].class);
 	}

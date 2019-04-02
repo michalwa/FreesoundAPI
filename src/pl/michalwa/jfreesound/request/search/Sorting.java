@@ -1,30 +1,46 @@
 package pl.michalwa.jfreesound.request.search;
 
-/** Defines a search request sorting */
+/**
+ * Defines a search request sorting
+ */
 public class Sorting
 {
-	/** The actual {@code sort} parameter value */
+	/**
+	 * The actual {@code sort} parameter value
+	 */
 	private final String sort;
 	
-	/** Returns a default sorting */
+	/**
+	 * Constructs a default sorting order
+	 */
 	public Sorting()
 	{
 		sort = "score";
 	}
 	
+	/**
+	 * Constructs a sorting order with the given parameters
+	 *
+	 * @param criterion the criterion to sort by
+	 * @param order the order to sort in
+	 */
 	public Sorting(Criterion criterion, Order order)
 	{
 		this.sort = criterion.id + "_" + order.id;
 	}
 	
-	/** Returns the computed sorting parameter value */
+	/**
+	 * Returns the computed sorting parameter value
+	 */
 	@Override
 	public String toString()
 	{
 		return sort;
 	}
 	
-	/** A criterion based on which sorting is performed */
+	/**
+	 * A criterion based on which sorting is performed
+	 */
 	public enum Criterion
 	{
 		/** Duration of a sound */
@@ -36,7 +52,7 @@ public class Sorting
 		/** Sound rating */
 		RATING("rating");
 		
-		private String id;
+		private final String id;
 		
 		Criterion(String id)
 		{
@@ -44,13 +60,15 @@ public class Sorting
 		}
 	}
 	
-	/** Sorting order */
+	/**
+	 * Sorting order
+	 */
 	public enum Order
 	{
 		DESCENDING("desc"),
 		ASCENDING("asc");
 		
-		private String id;
+		private final String id;
 		
 		Order(String id)
 		{

@@ -1,18 +1,29 @@
 package pl.michalwa.jfreesound.data;
 
-/** A geotag that can be assigned to a sound */
+/**
+ * A geotag that can be assigned to a sound
+ */
 public class Geotag
 {
-	private double latitude, longitude;
+	private final double latitude, longitude;
 	
+	/**
+	 * Constructs a geotag.
+	 *
+	 * @param latitude the latitude of the tag
+	 * @param longitude the longitude of the tag
+	 */
 	public Geotag(double latitude, double longitude)
 	{
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 	
-	/** Parses the geotag from a string when the latitude
-	 * and longitude are separated by a space. */
+	/**
+	 * Parses the geotag from a string when the latitude and longitude are separated by a space.
+	 *
+	 * @param str the geotag string to parse
+	 */
 	public Geotag(String str)
 	{
 		String[] vals = str.split(" ");
@@ -33,6 +44,6 @@ public class Geotag
 	@Override
 	public String toString()
 	{
-		return "Geotag(" + latitude + ", " + longitude + ")";
+		return "Geotag (" + latitude + ", " + longitude + ")";
 	}
 }

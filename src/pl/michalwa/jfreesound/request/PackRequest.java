@@ -2,6 +2,7 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,11 @@ public class PackRequest extends APIRequest<Pack>
 	/** The id of the pack */
 	private final int id;
 	
-	/** Initializes a pack request that will request the pack with the specified id */
+	/**
+	 * Initializes a pack request that will request the pack with the specified id
+	 *
+	 * @param id the id of the pack
+	 */
 	public PackRequest(int id)
 	{
 		this.id = id;
@@ -25,7 +30,7 @@ public class PackRequest extends APIRequest<Pack>
 	}
 	
 	@Override
-	public Pack processResponse(JsonObject response, Gson gson)
+	public Pack processResponse(JsonObject response, JsonParser json, Gson gson)
 	{
 		return gson.fromJson(response, Pack.class);
 	}

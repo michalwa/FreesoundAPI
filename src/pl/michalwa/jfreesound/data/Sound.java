@@ -9,13 +9,15 @@ import pl.michalwa.jfreesound.request.APIRequest;
 import pl.michalwa.jfreesound.request.PackRequest;
 import pl.michalwa.jfreesound.request.SimilarSounds;
 
-/** The response data structure of the
- * {@link pl.michalwa.jfreesound.request.SoundRequest SoundRequest} */
+/**
+ * A representation of the sound API resource
+ */
 @SuppressWarnings({"FieldCanBeLocal"})
 public class Sound
 {
 	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
-	 * They must not be changed for Gson uses those names to deserialize JSON objects */
+	 * They must not be changed for Gson uses those names to deserialize JSON objects.
+	 * They must also be non-final. */
 	private int id = -1;
 	private String url = null;
 	private String name = null;
@@ -251,14 +253,18 @@ public class Sound
 		return comment;
 	}
 	
-	/** Returns a request that can be used to retrieve similar sounds based on this sound.
-	 * The 'similar_sounds' sound info field is not needed for this method to work. */
+	/**
+	 * Returns a request that can be used to retrieve similar sounds based on this sound.
+	 * The 'similar_sounds' sound info field is not needed for this method to work.
+	 */
 	public SimilarSounds similarSounds()
 	{
 		return new SimilarSounds(id());
 	}
 
-	/** Requested descriptors information or `null` if no descriptors have been specified in the request */
+	/**
+	 * Requested descriptors information or `null` if no descriptors have been specified in the reques
+	 */
 	public APIRequest<?> analysis()
 	{
 		// TODO: Sound analysis request and data structure
@@ -285,7 +291,9 @@ public class Sound
 		return "Sound " + (id != -1 ? "#" + id : "") + (name != null ? " \"" + name + "\"" : "");
 	}
 	
-	/** Supported sound types */
+	/**
+	 * Supported sound types
+	 */
 	public enum Type
 	{
 		WAV("wav"),
@@ -295,7 +303,7 @@ public class Sound
 		M4A("m4a"),
 		FLAC("flac");
 
-		private String type;
+		private final String type;
 
 		Type(String type)
 		{
@@ -303,7 +311,9 @@ public class Sound
 		}
 	}
 
-	/** Supported types of sound previews */
+	/**
+	 * Supported types of sound previews
+	 */
 	public enum Preview
 	{
 		/** ~128kbps quality mp3 preview */
@@ -315,7 +325,7 @@ public class Sound
 		/** ~64kbps quality ogg preview */
 		LOW_QUALITY_OGG("preview-lq-ogg");
 
-		private String key;
+		private final String key;
 
 		Preview(String key)
 		{
@@ -323,7 +333,9 @@ public class Sound
 		}
 	}
 
-	/** Sound visualization image types */
+	/**
+	 * Visualization image types
+	 */
 	public enum Image
 	{
 		/** Large waveform image */
@@ -335,7 +347,7 @@ public class Sound
 		/** Medium spectrogram image */
 		SPECTROGRAM_MEDIUM("spectral_m");
 
-		private String key;
+		private final String key;
 
 		Image(String key)
 		{

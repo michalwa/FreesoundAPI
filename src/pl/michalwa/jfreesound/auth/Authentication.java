@@ -1,11 +1,20 @@
 package pl.michalwa.jfreesound.auth;
 
-import org.apache.http.client.methods.HttpUriRequest;
+import pl.michalwa.jfreesound.http.HttpRequest;
 
-/** Represents an authentication type and method */
+/**
+ * Authentication method base class.
+ *
+ * <p> Subclasses of this class allow performing authentication and their instances can
+ *     then be used to process outcoming requests so that they contain authentication information.
+ */
 public interface Authentication
 {
-	/** Processes the given HTTP request before execution.
-	 * Applies headers, parameters, etc. */
-	void processRequest(HttpUriRequest request);
+	/**
+	 * Processes the given HTTP request before execution. Adds headers containing
+	 * authentication information.
+	 *
+	 * @param request the request to be processed
+	 */
+	void processRequest(HttpRequest request);
 }

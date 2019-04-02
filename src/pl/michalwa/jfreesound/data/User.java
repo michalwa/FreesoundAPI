@@ -6,12 +6,15 @@ import pl.michalwa.jfreesound.request.APIRequest;
 import pl.michalwa.jfreesound.request.SoundListRequest;
 import pl.michalwa.jfreesound.request.UserSoundsRequest;
 
-/** The user instance data structure */
-@SuppressWarnings({"FieldCanBeLocal"})
+/**
+ * A representation of the user API resource
+ */
+@SuppressWarnings("FieldCanBeLocal")
 public class User
 {
 	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
-	 * They must not be changed for Gson uses those names to deserialize JSON objects */
+	 * They must not be changed for Gson uses those names to deserialize JSON objects.
+	 * They must also be non-final. */
 	private String url = null;
 	private String username = null;
 	private String about = null;
@@ -72,7 +75,9 @@ public class User
 		return num_sounds;
 	}
 	
-	/** Returns a new {@link UserSoundsRequest} that will request sounds uploaded by this user */
+	/**
+	 * Returns a new {@link UserSoundsRequest} that will request sounds uploaded by this user
+	 */
 	public SoundListRequest sounds()
 	{
 		return new UserSoundsRequest(username());
@@ -100,7 +105,7 @@ public class User
 	}
 	
 	/** Number of commens the user has made on other users' sounds */
-	public int numCommens()
+	public int numComments()
 	{
 		if(num_comments == -1) throw new FieldNotInitializedException(getClass(), "num_comments");
 		return num_comments;
@@ -119,14 +124,16 @@ public class User
 		return "User" + (username != null ? " \"" + username + "\"" : "");
 	}
 	
-	/** Supported avatar image sizes */
+	/**
+	 * Supported avatar image sizes
+	 */
 	public enum AvatarSize
 	{
 		SMALL("small"),
 		MEDIUM("medium"),
 		LARGE("large");
 		
-		private String key;
+		private final String key;
 		
 		AvatarSize(String key)
 		{

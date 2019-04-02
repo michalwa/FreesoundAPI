@@ -8,7 +8,8 @@ import pl.michalwa.jfreesound.request.PackSoundsRequest;
 public class Pack
 {
 	/* NOTE: The names of these fields correspond to the JSON properties of the API response.
-	 * They must not be changed for Gson uses those names to deserialize JSON objects */
+	 * They must not be changed for Gson uses those names to deserialize JSON objects
+	 * They must also be non-final. */
 	private int id = -1;
 	private String url = null;
 	private String description = null;

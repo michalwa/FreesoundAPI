@@ -24,6 +24,9 @@ public class FreesoundTest
 	@Before
 	public void setup()
 	{
+		// Setup the HTTP client
+		Freesound.setHttpClient(new DefaultHttpClient());
+		
 		// Read the configuration
 		Reader reader = new InputStreamReader(getClass().getResourceAsStream("/config.json"));
 		JsonObject config = new JsonParser().parse(reader).getAsJsonObject();
@@ -72,15 +75,15 @@ public class FreesoundTest
 				.include("bar")
 				.include("abc")
 				.exclude("abc");
+		
 		assertEquals("+\"foo\" +\"bar\" -\"abc\"", query.toString());
 		
 		TextSearch request = new TextSearch(query);
-		request.includeFields("id", "url");
+		request.includeFields("name");
 		
 		Sound[] response = freesound.request(request).safeAwait();
-		System.out.println(response[0].url());
 		
-		assertEquals(34123, response[0].id());
+		assertEquals("01-bottle-water-sparkle.flac", response[0].name());
 	}
 	
 	@Test

@@ -2,18 +2,25 @@ package pl.michalwa.jfreesound.request;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import pl.michalwa.jfreesound.data.Sound;
 
-/** Requests a sound instance by id */
+/**
+ * Requests a sound instance by id
+ */
 public class SoundRequest extends APIRequest<Sound>
 {
 	/** The id of the requested sound */
 	private final int id;
 	
-	/** @param id the id of the requested sound */
+	/**
+	 * Constructs a sound request
+	 *
+	 * @param id the id of the requested sound
+	 */
 	public SoundRequest(int id)
 	{
 		this.id = id;
@@ -26,7 +33,7 @@ public class SoundRequest extends APIRequest<Sound>
 	}
 	
 	@Override
-	public Sound processResponse(JsonObject response, Gson gson)
+	public Sound processResponse(JsonObject response, JsonParser json, Gson gson)
 	{
 		return gson.fromJson(response, Sound.class);
 	}
