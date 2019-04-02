@@ -1,7 +1,10 @@
 package pl.michalwa.jfreesound.data;
 
 /**
- * A geotag that can be assigned to a sound
+ * A geotag that can be read from a sound.
+ *
+ * <p> Geotags are metadata added by users to their sounds.
+ *     This class is a representation of the data type used to store this information.
  */
 public class Geotag
 {
@@ -31,11 +34,13 @@ public class Geotag
 		longitude = Double.parseDouble(vals[1]);
 	}
 	
+	/** The latitude of the geotag's location. */
 	public double latitude()
 	{
 		return latitude;
 	}
 	
+	/** The longitude of the geotag's location. */
 	public double longitude()
 	{
 		return longitude;
@@ -44,6 +49,6 @@ public class Geotag
 	@Override
 	public String toString()
 	{
-		return "Geotag (" + latitude + ", " + longitude + ")";
+		return "Geotag(" + latitude + ", " + longitude + ")";
 	}
 }

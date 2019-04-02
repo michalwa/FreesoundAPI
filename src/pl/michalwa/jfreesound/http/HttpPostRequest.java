@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * A POST-type HTTP request
  */
-public class HttpPostRequest extends HttpRequestWithBody<Map<String, String>>
+public class HttpPostRequest extends HttpRequestWithBody
 {
 	private final Map<String, String> params = new HashMap<>();
 	
@@ -20,9 +20,9 @@ public class HttpPostRequest extends HttpRequestWithBody<Map<String, String>>
 	 * Returns a copy of the POST parameters map for the request
 	 */
 	@Override
-	public Map<String, String> body()
+	public String body()
 	{
-		return new HashMap<>(params);
+		return HttpUtils.encodeParams(params, "UTF-8");
 	}
 	
 	@Override

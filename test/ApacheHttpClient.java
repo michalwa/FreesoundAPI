@@ -1,15 +1,12 @@
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import pl.michalwa.jfreesound.auth.UnauthorizedException;
 import pl.michalwa.jfreesound.http.*;
@@ -33,19 +30,26 @@ public class ApacheHttpClient implements HttpClient
 		HttpUriRequest req;
 		
 		if(request.method() == HttpMethod.GET || request instanceof HttpGetRequest) {
+			// Set URL
 			req = new HttpGet(request.url());
 		} else if(request instanceof HttpPostRequest) {
+			
+			// All POST requests coming from the library are form-urlencoded, so we don't need
+			// to worry about other content types
+			HttpEntity entity = EntityBuilder.create()
+				.setText(((HttpPostRequest) request).body())
+				.setContentType(ContentType.APPLICATION_FORM_URLENCODED)
+				.setContentEncoding("UTF-8")
+				.build();
+			
 			req = new HttpPost(request.url());
+			((HttpPost) req).setEntity(entity);
 			
-			List<NameValuePair> paramsList = ((HttpPostRequest) request).body().entrySet().stream()
-				.map(param -> new BasicNameValuePair(param.getKey(), param.getValue()))
-				.collect(Collectors.toList());
-			
-			((HttpPost) req).setEntity(new UrlEncodedFormEntity(paramsList, "UTF-8"));
 		} else {
 			throw new HttpException("Unsupported request type/method.");
 		}
 		
+		// Set headers
 		request.headers().forEach(req::addHeader);
 		
 		return req;

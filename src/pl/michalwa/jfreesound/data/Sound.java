@@ -288,7 +288,9 @@ public class Sound
 	@Override
 	public String toString()
 	{
-		return "Sound " + (id != -1 ? "#" + id : "") + (name != null ? " \"" + name + "\"" : "");
+		return "Sound "
+			+ (id != -1 ? "#" + id : "")                  // id
+			+ (name != null ? " \"" + name + "\"" : "");  // name
 	}
 	
 	/**

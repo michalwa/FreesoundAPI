@@ -1,8 +1,9 @@
 package pl.michalwa.jfreesound.http;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -26,25 +27,12 @@ public abstract class HttpRequest
 	 */
 	public String url()
 	{
-		// Encode URL parameters
-		List<String> encodedParams = urlParams.entrySet().stream()
-			.map(param -> {
-				try {
-					return URLEncoder.encode(param.getKey(), "UTF-8") + "=" + URLEncoder.encode(param.getValue(), "UTF-8");
-				} catch(UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				return null;
-			})
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-		
 		// Remove slashes from beginning and end of path elements
 		List<String> trimmedPath = path.stream()
 			.map(p -> p.replaceAll("^/+", "").replaceAll("/+$", ""))
 			.collect(Collectors.toList());
 		
-		return String.join("/", trimmedPath) + "?" + String.join("&", encodedParams);
+		return String.join("/", trimmedPath) + "?" + HttpUtils.encodeParams(urlParams, "UTF-8");
 	}
 	
 	@Override
